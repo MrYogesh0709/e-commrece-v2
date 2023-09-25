@@ -1,0 +1,1 @@
+import{a as o,s as a,j as e,K as i,N as u}from"./index-c94445e5.js";import{P as n}from"./index-8100b1b7.js";const p=({children:r})=>{const{user:s,status:t}=o(a);return t==="loading"?e.jsx(i,{}):s?r:e.jsx(u,{to:"/login",replace:!0})};p.propTypes={children:n.element.isRequired};export{p as default};
