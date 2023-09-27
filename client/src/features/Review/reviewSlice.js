@@ -1,10 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  createReview,
-  deleteReview,
-  getSingleProductReviews,
-  updateReview,
-} from "./reviewAPI";
+import { createReview, deleteReview, updateReview } from "./reviewAPI";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -22,11 +17,7 @@ export const updateReviewAsync = createAsyncThunk(
   "review/updateReview",
   async (data, thunkAPI) => await updateReview(data, thunkAPI)
 );
-export const getSingleProductReviewsAsync = createAsyncThunk(
-  "review/singleProductReview",
-  async (productId, thunkAPI) =>
-    await getSingleProductReviews(productId, thunkAPI)
-);
+
 export const deleteReviewAsync = createAsyncThunk(
   "review/deleteReview",
   async (reviewId, thunkAPI) => await deleteReview(reviewId, thunkAPI)
@@ -62,18 +53,6 @@ export const reviewSlice = createSlice({
         );
       })
       .addCase(updateReviewAsync.rejected, (state, action) => {
-        state.isLoading = false;
-        toast.error(action.payload);
-      })
-      .addCase(getSingleProductReviewsAsync.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getSingleProductReviewsAsync.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.reviews = action.payload.data.reviews;
-        state.totalReviews = action.payload.data.count;
-      })
-      .addCase(getSingleProductReviewsAsync.rejected, (state, action) => {
         state.isLoading = false;
         toast.error(action.payload);
       })

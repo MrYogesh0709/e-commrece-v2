@@ -15,7 +15,7 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import {
@@ -24,14 +24,12 @@ import {
   formatPrice,
 } from "../../../app/constants";
 import {
-  fetchAllBrandsAsync,
-  fetchAllCategoryAsync,
   fetchProductsByFiltersAsync,
   selectAllProducts,
 } from "../../product/productSlice";
-import { SkeletonProductGrid } from "../../product/components/ProductList";
 import Pagination from "../../common/Pagination";
 import notFound from ".././../../assets/no-product.svg";
+import { SkeletonProductGrid } from "../../product/components/ProductGrid";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -57,13 +55,13 @@ function classNames(...classes) {
 const AdminProductList = () => {
   const dispatch = useDispatch();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const { products, totalItems, categories, brands, productLoading } =
+  const { products, totalItems, productLoading } =
     useSelector(selectAllProducts);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
   const searchRef = useRef("");
-
+  const { brands, categories } = useLoaderData();
   const filters = [
     {
       id: "category",
@@ -129,16 +127,6 @@ const AdminProductList = () => {
   useEffect(() => {
     setPage(1);
   }, [totalItems]);
-
-  useEffect(() => {
-    if (categories.length === 0) {
-      dispatch(fetchAllCategoryAsync());
-    }
-
-    if (brands.length === 0) {
-      dispatch(fetchAllBrandsAsync());
-    }
-  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();

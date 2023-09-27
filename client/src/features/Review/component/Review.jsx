@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 import { selectAuth } from "../../auth/authSlice";
 import {
   createReviewAsync,
   deleteReviewAsync,
-  getSingleProductReviewsAsync,
   selectReview,
   updateReviewAsync,
 } from "../reviewSlice";
@@ -16,14 +15,10 @@ import { classNames } from "../../../app/constants";
 
 const Review = () => {
   const dispatch = useDispatch();
+  const { reviews } = useLoaderData();
   const { id } = useParams();
   const { user } = useSelector(selectAuth);
-  const {
-    reviews,
-    totalReviews,
-    isLoading: loading,
-    error,
-  } = useSelector(selectReview);
+  const { totalReviews, isLoading: loading, error } = useSelector(selectReview);
   const [openForm, setOpenForm] = useState(false);
   const [editForm, setEditFrom] = useState(false);
 
@@ -72,13 +67,6 @@ const Review = () => {
     }
   };
 
-  useEffect(() => {
-    try {
-      dispatch(getSingleProductReviewsAsync(id));
-    } catch (error) {
-      console.log(error);
-    }
-  }, [dispatch, id]);
   return (
     <>
       <div className="flex justify-center items-start" id="review">

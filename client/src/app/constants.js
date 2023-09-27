@@ -1,4 +1,4 @@
-export const ITEMS_PER_PAGE = 10;
+export const ITEMS_PER_PAGE = 12;
 export const PRODUCT_TITLE_LENGTH = 20;
 
 export const formatPrice = (number) => {
@@ -86,3 +86,20 @@ export const sizes = [
 export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
+export const sortOptions = [
+  { name: "Best Rating", sort: "averageRating", order: "desc", current: false },
+  // { name: "Newest",sort:"rating", current: false },
+  {
+    name: "Price: Low to High",
+    sort: "discountPrice",
+    order: "asc",
+    current: false,
+  },
+  {
+    name: "Price: High to Low",
+    sort: "discountPrice",
+    order: "desc",
+    current: false,
+  },
+];

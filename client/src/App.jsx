@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -6,49 +6,108 @@ import { checkUserAsync, selectAuth } from "./features/auth/authSlice";
 import { fetchCartItemsByUserIdAsync } from "./features/cart/cartSlice";
 import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "./features/common/Loader";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+  AdminHome,
+  AdminOrderPage,
+  AdminProductDetailPage,
+  AdminProductFormPage,
+  CartPage,
+  Checkout,
+  ForgotPasswordPage,
+  Home,
+  HomeLayout,
+  LoginPage,
+  OrderSuccessPage,
+  ProductDetailPage,
+  ResetPasswordPage,
+  SignUpPage,
+  SinglePageError,
+  StripePay,
+  UserOrderPage,
+  UserProfilePage,
+  VerifyMailPage,
+} from "./pages";
+import PageNotFound from "./pages/404";
+import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
+import Protected from "./features/auth/components/Protected";
+import Logout from "./features/auth/components/Logout";
 
-const LoginPage = React.lazy(() => import("./pages/LoginPage"));
-const SignUpPage = React.lazy(() => import("./pages/SignUpPage"));
-const PageNotFound = React.lazy(() => import("./pages/404"));
-const Logout = React.lazy(() => import("./features/auth/components/Logout"));
-const SinglePageError = React.lazy(() => import("./pages/SinglePageError"));
-const ResetPasswordPage = React.lazy(() => import("./pages/ResetPasswordPage"));
-const CartPage = React.lazy(() => import("./pages/CartPage"));
-const Checkout = React.lazy(() => import("./pages/Checkout"));
-const Home = React.lazy(() => import("./pages/Home"));
-const AdminHome = React.lazy(() => import("./pages/AdminHome"));
-const ProductDetailPage = React.lazy(() => import("./pages/ProductDetailPage"));
-const AdminOrderPage = React.lazy(() => import("./pages/AdminOrderPage"));
-const UserOrderPage = React.lazy(() => import("./pages/UserOrderPage"));
-const UserProfilePage = React.lazy(() => import("./pages/UserProfilePage"));
-const OrderSuccessPage = React.lazy(() => import("./pages/OrderSuccessPage"));
-const StripePay = React.lazy(() => import("./pages/StripePay"));
-const VerifyMailPage = React.lazy(() => import("./pages/VerifyMailPage"));
-const Protected = React.lazy(() =>
-  import("./features/auth/components/Protected")
-);
-const ProtectedAdmin = React.lazy(() =>
-  import("./features/auth/components/ProtectedAdmin")
-);
-const AdminProductDetailPage = React.lazy(() =>
-  import("./pages/AdminProductDetailPage")
-);
-const AdminProductFormPage = React.lazy(() =>
-  import("./pages/AdminProductFormPage")
-);
-const ForgotPasswordPage = React.lazy(() =>
-  import("./pages/ForgotPasswordPage")
-);
+import { loader as HomeLoader } from "./pages/Home";
+import { loader as SingleProductLoader } from "./pages/ProductDetailPage";
+import { loader as AdminHomeLoader } from "./pages/AdminHome";
+import { loader as UserOrderLoader } from "./pages/UserOrderPage";
+
+import { action as LoginAction } from "./pages/LoginPage";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <HomeLayout />,
     errorElement: <SinglePageError />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+        loader: HomeLoader(queryClient),
+      },
+      {
+        path: "cart",
+        element: (
+          <Protected>
+            <CartPage />
+          </Protected>
+        ),
+        errorElement: <SinglePageError />,
+      },
+      {
+        path: "product-detail/:id",
+        element: <ProductDetailPage />,
+        errorElement: <SinglePageError />,
+        loader: SingleProductLoader(queryClient),
+      },
+      {
+        path: "checkout",
+        element: (
+          <Protected>
+            <Checkout />
+          </Protected>
+        ),
+        errorElement: <SinglePageError />,
+      },
+      {
+        path: "orders",
+        element: (
+          <Protected>
+            <UserOrderPage />
+          </Protected>
+        ),
+        errorElement: <SinglePageError />,
+        loader: UserOrderLoader(queryClient),
+      },
+      {
+        path: "/profile",
+        element: (
+          <Protected>
+            <UserProfilePage />
+          </Protected>
+        ),
+        errorElement: <SinglePageError />,
+      },
+    ],
   },
   {
     path: "/admin",
+    loader: AdminHomeLoader,
     element: (
       <ProtectedAdmin>
         <AdminHome />
@@ -60,35 +119,14 @@ const router = createBrowserRouter([
     path: "/login",
     element: <LoginPage />,
     errorElement: <SinglePageError />,
+    action: LoginAction,
   },
   {
     path: "/signup",
     element: <SignUpPage />,
     errorElement: <SinglePageError />,
   },
-  {
-    path: "/cart",
-    element: (
-      <Protected>
-        <CartPage />
-      </Protected>
-    ),
-    errorElement: <SinglePageError />,
-  },
-  {
-    path: "/checkout",
-    element: (
-      <Protected>
-        <Checkout />
-      </Protected>
-    ),
-    errorElement: <SinglePageError />,
-  },
-  {
-    path: "/product-detail/:id",
-    element: <ProductDetailPage />,
-    errorElement: <SinglePageError />,
-  },
+
   {
     path: "/admin/product-detail/:id",
     element: (
@@ -130,24 +168,6 @@ const router = createBrowserRouter([
     element: (
       <Protected>
         <OrderSuccessPage />
-      </Protected>
-    ),
-    errorElement: <SinglePageError />,
-  },
-  {
-    path: "/orders",
-    element: (
-      <Protected>
-        <UserOrderPage />
-      </Protected>
-    ),
-    errorElement: <SinglePageError />,
-  },
-  {
-    path: "/profile",
-    element: (
-      <Protected>
-        <UserProfilePage />
       </Protected>
     ),
     errorElement: <SinglePageError />,
@@ -210,12 +230,13 @@ function App() {
   }, []);
 
   return (
-    <div className="app dark:bg-slate-900">
-      <Suspense fallback={<Loader />}>
+    <QueryClientProvider client={queryClient}>
+      <div className="app dark:bg-slate-900">
         <RouterProvider router={router}></RouterProvider>
-      </Suspense>
-      <ToastContainer autoClose={2000} theme="dark" position="bottom-left" />
-    </div>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <ToastContainer autoClose={2000} theme="dark" position="bottom-left" />
+      </div>
+    </QueryClientProvider>
   );
 }
 

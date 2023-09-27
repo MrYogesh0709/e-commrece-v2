@@ -2,22 +2,32 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ITEMS_PER_PAGE } from "../../app/constants";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 
-export default function Pagination({ handlePage, page, setPage, totalItems }) {
+export default function Pagination() {
+  const navigate = useNavigate();
+  const { search, pathname } = useLocation();
+  const { totalItems } = useLoaderData();
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const searchParams = new URLSearchParams(search);
+  const handlePageChange = (pageNumber) => {
+    searchParams.set("_page", pageNumber);
+    navigate(`${pathname}?${searchParams.toString()}`);
+  };
+  let page = parseInt(searchParams.get("_page")) || 1;
   const prevPage = () => {
     let newPage = page - 1;
     if (newPage < 1) {
       newPage = totalPages;
     }
-    setPage(newPage);
+    handlePageChange(newPage);
   };
   const nextPage = () => {
     let newPage = page + 1;
     if (newPage > totalPages) {
       newPage = 1;
     }
-    setPage(newPage);
+    handlePageChange(newPage);
   };
   return (
     totalItems > 0 && (
@@ -70,7 +80,7 @@ export default function Pagination({ handlePage, page, setPage, totalItems }) {
                   {Array.from({ length: totalPages }, (_, index) => {
                     return (
                       <button
-                        onClick={() => handlePage(index + 1)}
+                        onClick={() => handlePageChange(index + 1)}
                         key={index}
                         aria-current="page"
                         className={`relative z-10 inline-flex items-center ${

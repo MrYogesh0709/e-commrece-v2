@@ -1,17 +1,3 @@
-export const fetchLoggedInUserOrders = async (_, thunkAPI) => {
-  try {
-    const response = await fetch("/api/v1/order/user");
-    const data = await response.json();
-    if (response.ok) {
-      return { data };
-    } else {
-      return thunkAPI.rejectWithValue(data);
-    }
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
-  }
-};
-
 export const fetchLoggedInUser = async (_, thunkAPI) => {
   try {
     const response = await fetch("/api/v1/user/me");

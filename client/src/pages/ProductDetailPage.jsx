@@ -1,17 +1,38 @@
 import React from "react";
-import Navbar from "../features/navbar/Navbar";
 import ProductDetail from "../features/product/components/ProductDetail";
-import Footer from "../features/common/Footer";
 import Review from "../features/Review/component/Review";
+import axios from "axios";
+
+const singleProductQuery = (id) => {
+  return {
+    queryKey: ["singleProduct", id],
+    queryFn: () => axios(`/api/v1/products/${id}`),
+  };
+};
+const singleProductReview = (id) => {
+  return {
+    queryKey: ["review", id],
+    queryFn: () => axios(`/api/v1/review/product/${id}`),
+  };
+};
+
+export const loader =
+  (queryClient) =>
+  async ({ params }) => {
+    const { data: product } = await queryClient.ensureQueryData(
+      singleProductQuery(params.id)
+    );
+    const {
+      data: { reviews },
+    } = await queryClient.ensureQueryData(singleProductReview(params.id));
+    return { product, reviews };
+  };
 
 const ProductDetailPage = () => {
   return (
     <>
-      <Navbar>
-        <ProductDetail />
-        <Review />
-      </Navbar>
-      <Footer />
+      <ProductDetail />
+      <Review />
     </>
   );
 };

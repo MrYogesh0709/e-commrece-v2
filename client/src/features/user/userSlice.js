@@ -3,7 +3,6 @@ import {
   addAddress,
   editAddress,
   fetchLoggedInUser,
-  fetchLoggedInUserOrders,
   removeAddress,
   updatePassword,
   updateUser,
@@ -22,10 +21,6 @@ const initialState = {
 export const fetchLoggedInUserAsync = createAsyncThunk(
   "user/fetchLoggedInUser",
   async () => await fetchLoggedInUser()
-);
-export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
-  "user/fetchLoggedInUserOrders",
-  async () => await fetchLoggedInUserOrders()
 );
 export const updateUserAsync = createAsyncThunk(
   "user/updateUser",
@@ -72,19 +67,6 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserAsync.rejected, (state) => {
         state.isLoading = false;
-      })
-      .addCase(fetchLoggedInUserOrdersAsync.pending, (state) => {
-        state.isLoading = true;
-        state.orderLoading = false;
-      })
-      .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.userOrders = action.payload.data;
-        state.orderLoading = true;
-      })
-      .addCase(fetchLoggedInUserOrdersAsync.rejected, (state) => {
-        state.isLoading = false;
-        state.orderLoading = true;
       })
       .addCase(updateUserAsync.pending, (state) => {
         state.isLoading = true;
