@@ -1,4 +1,4 @@
-export const ITEMS_PER_PAGE = 12;
+export const ITEMS_PER_PAGE = 9;
 export const PRODUCT_TITLE_LENGTH = 20;
 
 export const formatPrice = (number) => {

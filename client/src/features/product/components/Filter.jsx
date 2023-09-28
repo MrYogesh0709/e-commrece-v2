@@ -1,18 +1,12 @@
 import React from "react";
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
-import {
-  Link,
-  useLoaderData,
-  useLocation,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 export const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { brands, categories } = useLoaderData();
-  const location = useLocation();
   const filters = [
     {
       id: "category",

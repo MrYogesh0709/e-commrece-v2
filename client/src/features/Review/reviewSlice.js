@@ -3,7 +3,7 @@ import { createReview, deleteReview, updateReview } from "./reviewAPI";
 import { toast } from "react-toastify";
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   error: null,
   reviews: [],
   totalReviews: null,

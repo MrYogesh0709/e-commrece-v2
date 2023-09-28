@@ -30,6 +30,7 @@ const allBrands = () => {
     queryFn: () => axios(`/api/v1/brands`),
   };
 };
+
 const allCategory = () => {
   return {
     queryKey: ["category"],

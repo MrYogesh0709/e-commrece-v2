@@ -11,7 +11,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   AdminHome,
   AdminOrderPage,
-  AdminProductDetailPage,
   AdminProductFormPage,
   CartPage,
   Checkout,
@@ -33,13 +32,14 @@ import PageNotFound from "./pages/404";
 import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
 import Protected from "./features/auth/components/Protected";
 import Logout from "./features/auth/components/Logout";
+import AddProduct from "./features/admin/components/AddProduct";
 
 import { loader as HomeLoader } from "./pages/Home";
 import { loader as SingleProductLoader } from "./pages/ProductDetailPage";
 import { loader as AdminHomeLoader } from "./pages/AdminHome";
+import { loader as AdminOrderLoader } from "./pages/AdminOrderPage";
+import { loader as AdminOrderFormLoader } from "./pages/AdminProductFormPage";
 import { loader as UserOrderLoader } from "./pages/UserOrderPage";
-
-import { action as LoginAction } from "./pages/LoginPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -95,7 +95,7 @@ const router = createBrowserRouter([
         loader: UserOrderLoader(queryClient),
       },
       {
-        path: "/profile",
+        path: "profile",
         element: (
           <Protected>
             <UserProfilePage />
@@ -103,46 +103,45 @@ const router = createBrowserRouter([
         ),
         errorElement: <SinglePageError />,
       },
+      {
+        path: "admin",
+        loader: AdminHomeLoader(queryClient),
+        element: (
+          <ProtectedAdmin>
+            <AdminHome />
+          </ProtectedAdmin>
+        ),
+        errorElement: <SinglePageError />,
+      },
+      {
+        path: "admin/product-form",
+        element: (
+          <ProtectedAdmin>
+            <AddProduct />
+          </ProtectedAdmin>
+        ),
+        errorElement: <SinglePageError />,
+      },
+      {
+        path: "admin/order",
+        element: (
+          <ProtectedAdmin>
+            <AdminOrderPage />
+          </ProtectedAdmin>
+        ),
+        loader: AdminOrderLoader(queryClient),
+        errorElement: <SinglePageError />,
+      },
     ],
-  },
-  {
-    path: "/admin",
-    loader: AdminHomeLoader,
-    element: (
-      <ProtectedAdmin>
-        <AdminHome />
-      </ProtectedAdmin>
-    ),
-    errorElement: <SinglePageError />,
   },
   {
     path: "/login",
     element: <LoginPage />,
     errorElement: <SinglePageError />,
-    action: LoginAction,
   },
   {
     path: "/signup",
     element: <SignUpPage />,
-    errorElement: <SinglePageError />,
-  },
-
-  {
-    path: "/admin/product-detail/:id",
-    element: (
-      <ProtectedAdmin>
-        <AdminProductDetailPage />
-      </ProtectedAdmin>
-    ),
-    errorElement: <SinglePageError />,
-  },
-  {
-    path: "/admin/product-form",
-    element: (
-      <ProtectedAdmin>
-        <AdminProductFormPage />
-      </ProtectedAdmin>
-    ),
     errorElement: <SinglePageError />,
   },
   {
@@ -152,15 +151,7 @@ const router = createBrowserRouter([
         <AdminProductFormPage />
       </ProtectedAdmin>
     ),
-    errorElement: <SinglePageError />,
-  },
-  {
-    path: "/admin/orders",
-    element: (
-      <ProtectedAdmin>
-        <AdminOrderPage />
-      </ProtectedAdmin>
-    ),
+    loader: AdminOrderFormLoader(queryClient),
     errorElement: <SinglePageError />,
   },
   {

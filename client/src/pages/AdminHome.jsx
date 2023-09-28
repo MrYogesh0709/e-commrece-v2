@@ -1,27 +1,82 @@
-import React from "react";
-import AdminProductList from "../features/admin/components/AdminProductList";
-import Navbar from "../features/navbar/Navbar";
-import Footer from "../features/common/Footer";
+import React, { useState } from "react";
 import axios from "axios";
+import { ITEMS_PER_PAGE } from "../app/constants";
+import MobileFilter from "../features/product/components/MobileFilter";
+import SearchBar from "../features/product/components/SearchBar";
+import AdminProductGrid from "../features/admin/components/AdminProductGrid";
 
-export const loader = async () => {
-  try {
-    const brands = await axios("/api/v1/brands");
-    const categories = await axios("/api/v1/categories");
-    return { brands, categories };
-  } catch (error) {
-    console.error(error);
-  }
-  return null;
+const allProductsQuery = (queryParams) => {
+  const { search, _page, category, _sort, _order, brand } = queryParams;
+  return {
+    queryKey: [
+      "products",
+      search ?? "",
+      category ?? "",
+      brand ?? "",
+      _sort ?? "",
+      _page ?? 1,
+      _order ?? "",
+    ],
+    queryFn: () =>
+      axios(`/api/v1/products?_limit=${ITEMS_PER_PAGE}&admin=true`, {
+        params: queryParams,
+      }),
+  };
 };
 
+const allBrands = () => {
+  return {
+    queryKey: ["brands"],
+    queryFn: () => axios(`/api/v1/brands`),
+  };
+};
+const allCategory = () => {
+  return {
+    queryKey: ["category"],
+    queryFn: () => axios(`/api/v1/categories`),
+  };
+};
+
+export const loader =
+  (queryClient) =>
+  async ({ request }) => {
+    try {
+      const { data: brands } = await queryClient.ensureQueryData(allBrands());
+      const { data: categories } = await queryClient.ensureQueryData(
+        allCategory()
+      );
+      const params = Object.fromEntries([
+        ...new URL(request.url).searchParams.entries(),
+      ]);
+      const response = await queryClient.ensureQueryData(
+        allProductsQuery(params)
+      );
+      const totalItems = await response.headers.get("X-Total-Count");
+      const products = response.data;
+      return { brands, categories, products, totalItems };
+    } catch (error) {
+      console.error(error);
+    }
+    return null;
+  };
+
 const AdminHome = () => {
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   return (
     <>
-      <Navbar title={"Products"}>
-        <AdminProductList />
-      </Navbar>
-      <Footer />
+      <div className="bg-white dark:bg-slate-900">
+        <div>
+          {/* Mobile filter dialog */}
+          <MobileFilter
+            mobileFiltersOpen={mobileFiltersOpen}
+            setMobileFiltersOpen={setMobileFiltersOpen}
+          />
+          {/* SearchBar */}
+          <SearchBar />
+          {/* Big screen */}
+          <AdminProductGrid setMobileFiltersOpen={setMobileFiltersOpen} />
+        </div>
+      </div>
     </>
   );
 };

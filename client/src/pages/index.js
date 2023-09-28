@@ -4,7 +4,6 @@ export { default as Home } from "./Home";
 export { default as LoginPage } from "./LoginPage";
 export { default as AdminHome } from "./AdminHome";
 export { default as AdminOrderPage } from "./AdminOrderPage";
-export { default as AdminProductDetailPage } from "./AdminProductDetailPage";
 export { default as AdminProductFormPage } from "./AdminProductFormPage";
 export { default as CartPage } from "./CartPage";
 export { default as Checkout } from "./Checkout";

@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateOrderAsync } from "../../order/orderSlice";
 import {
-  fetchAllOrdersAsync,
-  selectOrder,
-  updateOrderAsync,
-} from "../../order/orderSlice";
-import {
-  ITEMS_PER_PAGE,
   firstLatterCapital,
   formatPrice,
   getStatusColor,
@@ -14,20 +9,34 @@ import {
 import Pagination from "../../common/Pagination";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
 import Modal from "../../common/Modal";
+import {
+  Form,
+  useLoaderData,
+  useSearchParams,
+  useSubmit,
+} from "react-router-dom";
 
 const AdminOrder = () => {
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [sort, setSort] = useState({});
   const [editOrderId, setEditOrderId] = useState(-1);
   const [openModal, setOpenModal] = useState(null);
   const [status, setStatus] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState(null);
-  const { orders, isLoading, totalOrders } = useSelector(selectOrder);
-  useEffect(() => {
-    const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchAllOrdersAsync({ sort, pagination }));
-  }, [dispatch, page, sort]);
+  const { orders } = useLoaderData();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const submit = useSubmit();
+
+  const sort = searchParams.get("_sort");
+  const order = searchParams.get("_order");
+
+  const handleSort = (option) => {
+    setSearchParams((prevParams) => {
+      prevParams.set("_sort", option["sort"]);
+      prevParams.set("_order", option["order"]);
+      submit(prevParams);
+      return prevParams;
+    });
+  };
 
   const handleShow = (e, order) => {
     //TODO:DO SOMETHING HERE
@@ -36,19 +45,6 @@ const AdminOrder = () => {
 
   const handleEdit = (e, order) => {
     setEditOrderId(order.id);
-  };
-
-  const handlePage = (page) => {
-    setPage(page);
-  };
-
-  const handleSort = (option) => {
-    const newSort = {
-      ...sort,
-      _sort: option["sort"],
-      _order: option["order"],
-    };
-    setSort(newSort);
   };
 
   const handleOrderChange = (e, order) => {
@@ -61,10 +57,10 @@ const AdminOrder = () => {
     setPaymentStatus(e.target.value);
   };
 
-  const handleOrderStatus = (e, order) => {
+  const handleOrderStatus = async (e, order) => {
     const updatedOrder = {
       ...order,
-      status: status ?? order.status, //nullish operator if left is null only then right will be executed
+      status: status ?? order.status,
       paymentStatus: paymentStatus ?? order.paymentStatus,
     };
     dispatch(updateOrderAsync(updatedOrder));
@@ -77,10 +73,8 @@ const AdminOrder = () => {
       <div className="flex items-center justify-center font-sans overflow-x-auto">
         <div className="w-full">
           {/* <AdminOrderSkeleton /> */}
-          {isLoading ? (
-            <AdminOrderSkeleton />
-          ) : orders.length > 0 ? (
-            <div className="bg-white dark:bg-slate-900 shadow-md rounded my-6">
+          {orders.length > 0 ? (
+            <Form className="bg-white dark:bg-slate-900 shadow-md rounded my-6">
               <table className=" w-full table-auto">
                 <thead>
                   <tr className="bg-gray-200 dark:bg-slate-700 text-gray-600 dark:text-slate-300 uppercase text-sm leading-normal">
@@ -89,12 +83,12 @@ const AdminOrder = () => {
                       onClick={() =>
                         handleSort({
                           sort: "id",
-                          order: sort?._order === "asc" ? "desc" : "asc",
+                          order: order === "asc" ? "desc" : "asc",
                         })
                       }
                     >
                       Order# &nbsp;
-                      {sort?._sort === "id" && sort?._order === "asc" ? (
+                      {sort === "id" && order === "asc" ? (
                         <ArrowUpIcon className="w-6 h-6 inline" />
                       ) : (
                         <ArrowDownIcon className="w-6 h-6 inline" />
@@ -102,17 +96,16 @@ const AdminOrder = () => {
                     </th>
                     <th className="py-3 px-6 text-left">Items</th>
                     <th
-                      className="py-3 px-6 text-center"
+                      className="py-3 px-6 text-center cursor-pointer"
                       onClick={() =>
                         handleSort({
                           sort: "totalAmount",
-                          order: sort?._order === "asc" ? "desc" : "asc",
+                          order: order === "asc" ? "desc" : "asc",
                         })
                       }
                     >
                       Total Amount &nbsp;
-                      {sort?._sort === "totalAmount" &&
-                      sort?._order === "asc" ? (
+                      {sort === "totalAmount" && order === "asc" ? (
                         <ArrowUpIcon className="w-6 h-6 inline" />
                       ) : (
                         <ArrowDownIcon className="w-6 h-6 inline" />
@@ -123,32 +116,32 @@ const AdminOrder = () => {
                     <th className="py-3 px-6 text-center">Payment Method</th>
                     <th className="py-3 px-6 text-center">Payment Status</th>
                     <th
-                      className="py-3 px-6 text-center"
+                      className="py-3 px-6 text-center cursor-pointer"
                       onClick={() =>
                         handleSort({
                           sort: "createdAt",
-                          order: sort?._order === "asc" ? "desc" : "asc",
+                          order: order === "asc" ? "desc" : "asc",
                         })
                       }
                     >
                       Order Time &nbsp;
-                      {sort?._sort === "createdAt" && sort?._order === "asc" ? (
+                      {sort === "createdAt" && order === "asc" ? (
                         <ArrowUpIcon className="w-6 h-6 inline" />
                       ) : (
                         <ArrowDownIcon className="w-6 h-6 inline" />
                       )}
                     </th>
                     <th
-                      className="py-3 px-6 text-center"
+                      className="py-3 px-6 text-center cursor-pointer"
                       onClick={() =>
                         handleSort({
                           sort: "updatedAt",
-                          order: sort?._order === "asc" ? "desc" : "asc",
+                          order: order === "asc" ? "desc" : "asc",
                         })
                       }
                     >
                       Last Update &nbsp;
-                      {sort?._sort === "updatedAt" && sort?._order === "asc" ? (
+                      {sort === "updatedAt" && order === "asc" ? (
                         <ArrowUpIcon className="w-6 h-6 inline" />
                       ) : (
                         <ArrowDownIcon className="w-6 h-6 inline" />
@@ -333,7 +326,7 @@ const AdminOrder = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </Form>
           ) : (
             <div className="text-2xl font-medium text-center my-10">
               No Order Yet...!
@@ -341,18 +334,8 @@ const AdminOrder = () => {
           )}
         </div>
       </div>
-      {isLoading ? (
-        <div className="skeleton-loader px-4 py-3 sm-px-6 dark:bg-slate-700 animate-pulse"></div>
-      ) : (
-        orders.length > 0 && (
-          <Pagination
-            handlePage={handlePage}
-            page={page}
-            setPage={setPage}
-            totalItems={totalOrders}
-          />
-        )
-      )}
+
+      <Pagination />
     </div>
   );
 };

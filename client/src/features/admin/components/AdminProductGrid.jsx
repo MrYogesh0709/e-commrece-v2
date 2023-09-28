@@ -1,12 +1,12 @@
 import React from "react";
 import { Form } from "react-router-dom";
-import PropTypes from "prop-types";
-import { Filter } from "./Filter";
-import ProductGrid from "./ProductGrid";
 import Pagination from "../../common/Pagination";
-import Sort from "./Sort";
+import { ProductGrid } from "./ProductGrid";
+import { Filter } from "../../product/components/Filter";
+import PropTypes from "prop-types";
+import Sort from "../../product/components/Sort";
 
-const ProductList = ({ setMobileFiltersOpen }) => {
+const AdminProductGrid = ({ setMobileFiltersOpen }) => {
   return (
     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       {/* Sorting */}
@@ -21,14 +21,13 @@ const ProductList = ({ setMobileFiltersOpen }) => {
           <ProductGrid />
         </div>
       </section>
-
+      {/* pagination start */}
       <Pagination />
     </main>
   );
 };
 
-export default ProductList;
-
-ProductList.propTypes = {
+export default AdminProductGrid;
+AdminProductGrid.propTypes = {
   setMobileFiltersOpen: PropTypes.func,
 };

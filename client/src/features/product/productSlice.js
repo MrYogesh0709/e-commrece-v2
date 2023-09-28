@@ -1,10 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  createProduct,
-  fetchProductById,
-  fetchProductsByFilters,
-  updateProduct,
-} from "./productAPI";
+import { createProduct, updateProduct } from "./productAPI";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -17,25 +12,6 @@ const initialState = {
   error: null,
   productLoading: true,
 };
-
-export const fetchProductsByFiltersAsync = createAsyncThunk(
-  "product/fetchFilteredProducts",
-  async ({ filter, sort, pagination, admin, search }) => {
-    const response = await fetchProductsByFilters(
-      filter,
-      sort,
-      pagination,
-      admin,
-      search
-    );
-    return response.data;
-  }
-);
-
-export const fetchSingleProductAsync = createAsyncThunk(
-  "product/fetchSingleProduct",
-  async (productId, thunkAPI) => await fetchProductById(productId, thunkAPI)
-);
 
 export const createProductAsync = createAsyncThunk(
   "product/createProduct",
@@ -65,28 +41,6 @@ export const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProductsByFiltersAsync.pending, (state) => {
-        state.productLoading = true;
-      })
-      .addCase(fetchProductsByFiltersAsync.fulfilled, (state, action) => {
-        state.productLoading = false;
-        state.products = action.payload.products;
-        state.totalItems = action.payload.totalItems;
-      })
-      .addCase(fetchProductsByFiltersAsync.rejected, (state) => {
-        state.productLoading = false;
-      })
-      .addCase(fetchSingleProductAsync.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(fetchSingleProductAsync.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.singleProduct = action.payload;
-      })
-      .addCase(fetchSingleProductAsync.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
       .addCase(createProductAsync.pending, (state) => {
         state.isLoading = true;
       })

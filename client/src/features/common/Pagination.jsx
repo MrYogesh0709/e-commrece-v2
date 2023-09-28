@@ -10,11 +10,14 @@ export default function Pagination() {
   const { totalItems } = useLoaderData();
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const searchParams = new URLSearchParams(search);
+
   const handlePageChange = (pageNumber) => {
     searchParams.set("_page", pageNumber);
     navigate(`${pathname}?${searchParams.toString()}`);
   };
+
   let page = parseInt(searchParams.get("_page")) || 1;
+
   const prevPage = () => {
     let newPage = page - 1;
     if (newPage < 1) {
@@ -29,6 +32,7 @@ export default function Pagination() {
     }
     handlePageChange(newPage);
   };
+
   return (
     totalItems > 0 && (
       <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 dark:bg-slate-900">

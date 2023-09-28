@@ -11,6 +11,7 @@ const HomeLayout = () => {
     "/cart": "Cart",
     "/orders": "Orders",
     "/profile": "Profile",
+    "/admin/orders": "All Orders",
   };
 
   const title = titleMap[pathname] || null;

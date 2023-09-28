@@ -12,11 +12,7 @@ import { createOrderAsync, selectOrder } from "../features/order/orderSlice";
 import { addAddressAsync, selectUser } from "../features/user/userSlice";
 import Modal from "../features/common/Modal";
 import { toast } from "react-toastify";
-import { formatPrice } from "../app/constants";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames, formatPrice } from "../app/constants";
 
 const Checkout = () => {
   const dispatch = useDispatch();

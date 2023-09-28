@@ -1,63 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useLoaderData,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   clearSelectedProduct,
+  createProductAsync,
   selectAllProducts,
-  updateProductItemAsync,
 } from "../../product/productSlice";
-import Modal from "../../common/Modal";
 import { colors, sizes } from "../../../app/constants";
 
-export default function ProductForm() {
+export default function AddProduct() {
   const dispatch = useDispatch();
-  const { id: ProductId } = useParams();
-  const [openModal, setOpenModal] = useState(false);
   const { brands, categories, isLoading } = useSelector(selectAllProducts);
   const navigate = useNavigate();
   const location = useLocation();
-  const { singleProduct } = useLoaderData();
   const {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = useForm();
-
-  useEffect(() => {
-    setValue("title", singleProduct.title);
-    setValue("description", singleProduct.description);
-    setValue("price", singleProduct.price);
-    setValue("discountPercentage", singleProduct.discountPercentage);
-    setValue("stock", singleProduct.stock);
-    setValue("thumbnail", singleProduct.thumbnail);
-    setValue("brand", singleProduct.brand);
-    setValue("category", singleProduct.category);
-    setValue("rating", singleProduct.rating);
-    setValue("image1", singleProduct.images[0]);
-    setValue("image2", singleProduct.images[1]);
-    setValue("image3", singleProduct.images[2]);
-    setValue("image4", singleProduct.images[3]);
-    setValue("highlight1", singleProduct.highlights[0]);
-    setValue("highlight2", singleProduct.highlights[1]);
-    setValue("highlight3", singleProduct.highlights[2]);
-    setValue("highlight4", singleProduct.highlights[3]);
-    setValue(
-      "colors",
-      singleProduct.colors.map((color) => color.id)
-    );
-    setValue(
-      "sizes",
-      singleProduct.sizes.map((size) => size.id)
-    );
-  }, [dispatch, singleProduct, setValue]);
 
   const onSubmit = (data) => {
     try {
@@ -93,28 +55,12 @@ export default function ProductForm() {
       delete product.highlight2;
       delete product.highlight3;
       delete product.highlight4;
-      product.id = ProductId;
-      product.rating = singleProduct.rating || 0;
-      dispatch(updateProductItemAsync(product));
+
+      dispatch(createProductAsync(product));
       reset();
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleDelete = () => {
-    setOpenModal(true);
-  };
-
-  const handleDanger = () => {
-    const product = { ...singleProduct };
-    product.deleted = true;
-    dispatch(updateProductItemAsync(product));
-    reset();
-    dispatch(clearSelectedProduct());
-    setTimeout(() => {
-      navigate("/admin");
-    }, 3000);
   };
 
   const handleCancel = () => {
@@ -125,15 +71,6 @@ export default function ProductForm() {
 
   return (
     <>
-      <Modal
-        title={`Delete ${singleProduct?.title}`}
-        message={`Are you sure you want to Delete the ${singleProduct?.title} ?`}
-        dangerOption="Delete"
-        cancelOption="Cancel"
-        showModal={openModal}
-        dangerAction={handleDanger}
-        cancelAction={() => setOpenModal(false)}
-      />
       <div className="mx-auto max-w-2xl px-4 py-0  sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-12">
@@ -147,9 +84,9 @@ export default function ProductForm() {
               </h2>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                {singleProduct?.deleted && (
+                {/* {singleProduct?.deleted && (
                   <h2 className="text-red-600">This Product is Deleted</h2>
-                )}
+                )} */}
                 {/* Product Name */}
                 <div className="sm:col-span-full">
                   <label
@@ -660,7 +597,7 @@ export default function ProductForm() {
             >
               Cancel
             </button>
-            {singleProduct && !singleProduct?.deleted && (
+            {/* {singleProduct && !singleProduct?.deleted && (
               <button
                 type="button"
                 onClick={handleDelete}
@@ -668,7 +605,7 @@ export default function ProductForm() {
               >
                 Delete
               </button>
-            )}
+            )} */}
             <button
               type="submit"
               disabled={isLoading}

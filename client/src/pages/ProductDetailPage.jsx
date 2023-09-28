@@ -23,9 +23,9 @@ export const loader =
       singleProductQuery(params.id)
     );
     const {
-      data: { reviews },
+      data: { reviews, count },
     } = await queryClient.ensureQueryData(singleProductReview(params.id));
-    return { product, reviews };
+    return { product, reviews, count };
   };
 
 const ProductDetailPage = () => {

@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useRouteError } from "react-router-dom";
 
 export default function SinglePageError() {
+  const error = useRouteError();
+  console.log(error);
   return (
     <main className="grid min-h-full place-items-center bg-white dark:bg-slate-900 px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">

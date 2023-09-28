@@ -8,14 +8,12 @@ import { toast } from "react-toastify";
 import { selectAuth } from "../../auth/authSlice";
 import { scrollToReviewSection } from "../../common/SmoothScroll";
 import { classNames, formatPrice } from "../../../app/constants";
-import { selectReview } from "../../Review/reviewSlice";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
-  const { product } = useLoaderData();
+  const { product, count: totalReviews } = useLoaderData();
   const { cartItems } = useSelector(selectCart);
   const { user } = useSelector(selectAuth);
-  const { totalReviews } = useSelector(selectReview);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
 

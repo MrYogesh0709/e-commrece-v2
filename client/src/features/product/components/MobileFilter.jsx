@@ -8,7 +8,6 @@ import { Filter } from "./Filter";
 export default function MobileFilter({
   mobileFiltersOpen,
   setMobileFiltersOpen,
-  filters,
 }) {
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -59,7 +58,7 @@ export default function MobileFilter({
 
               {/* Filters */}
               <Form className="mt-4 border-t border-gray-200">
-                <Filter filters={filters} />
+                <Filter />
               </Form>
             </Dialog.Panel>
           </Transition.Child>
