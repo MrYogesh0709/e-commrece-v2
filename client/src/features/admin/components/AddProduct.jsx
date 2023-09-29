@@ -1,17 +1,32 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import {
   clearSelectedProduct,
   createProductAsync,
   selectAllProducts,
 } from "../../product/productSlice";
 import { colors, sizes } from "../../../app/constants";
+import { allBrands, allCategory } from "../../../pages/HomeLayout";
+
+export const loader = (queryClient) => async () => {
+  try {
+    const { data: brands } = await queryClient.ensureQueryData(allBrands());
+    const { data: categories } = await queryClient.ensureQueryData(
+      allCategory()
+    );
+    return { brands, categories };
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+};
 
 export default function AddProduct() {
   const dispatch = useDispatch();
-  const { brands, categories, isLoading } = useSelector(selectAllProducts);
+  const { isLoading } = useSelector(selectAllProducts);
+  const { brands, categories } = useLoaderData();
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -22,6 +37,8 @@ export default function AddProduct() {
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log(data.colors);
+    console.log(data.sizes);
     try {
       const product = {
         ...data,
@@ -42,10 +59,11 @@ export default function AddProduct() {
           data.highlight3,
           data.highlight4,
         ],
-        colors: data.colors.map((color) =>
-          colors.find((clr) => clr.id === color)
-        ),
-        sizes: data.sizes.map((size) => sizes.find((sz) => sz.id === size)),
+        colors:
+          data.colors?.map((color) => colors.find((clr) => clr.id === color)) ||
+          [],
+        sizes:
+          data.sizes?.map((size) => sizes.find((sz) => sz.id === size)) || [],
       };
       delete product.image1;
       delete product.image2;
@@ -55,7 +73,6 @@ export default function AddProduct() {
       delete product.highlight2;
       delete product.highlight3;
       delete product.highlight4;
-
       dispatch(createProductAsync(product));
       reset();
     } catch (error) {

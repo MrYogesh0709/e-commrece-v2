@@ -38,7 +38,8 @@ import { loader as HomeLoader } from "./pages/Home";
 import { loader as SingleProductLoader } from "./pages/ProductDetailPage";
 import { loader as AdminHomeLoader } from "./pages/AdminHome";
 import { loader as AdminOrderLoader } from "./pages/AdminOrderPage";
-import { loader as AdminOrderFormLoader } from "./pages/AdminProductFormPage";
+import { loader as AdminProductAddLoader } from "./features/admin/components/AddProduct";
+import { loader as AdminProductEditLoader } from "./pages/AdminProductFormPage";
 import { loader as UserOrderLoader } from "./pages/UserOrderPage";
 
 const queryClient = new QueryClient({
@@ -120,6 +121,7 @@ const router = createBrowserRouter([
             <AddProduct />
           </ProtectedAdmin>
         ),
+        loader: AdminProductAddLoader(queryClient),
         errorElement: <SinglePageError />,
       },
       {
@@ -129,7 +131,7 @@ const router = createBrowserRouter([
             <AdminProductFormPage />
           </ProtectedAdmin>
         ),
-        loader: AdminOrderFormLoader(queryClient),
+        loader: AdminProductEditLoader(queryClient),
         errorElement: <SinglePageError />,
       },
       {
