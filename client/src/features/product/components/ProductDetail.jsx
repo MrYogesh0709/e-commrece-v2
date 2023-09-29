@@ -19,6 +19,9 @@ export default function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
+    if (product.deleted) {
+      return toast.error("Product not Available Can not add to cart");
+    }
     if (product.stock === 0) {
       return toast.error("Item out of stock ");
     }

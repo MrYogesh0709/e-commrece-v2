@@ -123,6 +123,16 @@ const router = createBrowserRouter([
         errorElement: <SinglePageError />,
       },
       {
+        path: "/admin/product-form/edit/:id",
+        element: (
+          <ProtectedAdmin>
+            <AdminProductFormPage />
+          </ProtectedAdmin>
+        ),
+        loader: AdminOrderFormLoader(queryClient),
+        errorElement: <SinglePageError />,
+      },
+      {
         path: "admin/order",
         element: (
           <ProtectedAdmin>
@@ -142,16 +152,6 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpPage />,
-    errorElement: <SinglePageError />,
-  },
-  {
-    path: "/admin/product-form/edit/:id",
-    element: (
-      <ProtectedAdmin>
-        <AdminProductFormPage />
-      </ProtectedAdmin>
-    ),
-    loader: AdminOrderFormLoader(queryClient),
     errorElement: <SinglePageError />,
   },
   {

@@ -1,22 +1,20 @@
 import React from "react";
 import ProductForm from "../features/admin/components/ProductForm";
-import axios from "axios";
-
-const singleProductEditForm = (id) => {
-  return {
-    queryKey: ["singleProductEditForm", id],
-    queryFn: () => axios(`/api/v1/products/${id}`),
-  };
-};
+import { allBrands, allCategory } from "./HomeLayout";
+import { singleProductQuery } from "./ProductDetailPage";
 
 export const loader =
   (queryClient) =>
   async ({ params }) => {
     try {
-      const { data: singleProduct } = await queryClient.ensureQueryData(
-        singleProductEditForm(params.id)
+      const { data: brands } = await queryClient.ensureQueryData(allBrands());
+      const { data: categories } = await queryClient.ensureQueryData(
+        allCategory()
       );
-      return { singleProduct };
+      const { data: singleProduct } = await queryClient.ensureQueryData(
+        singleProductQuery(params.id)
+      );
+      return { singleProduct, brands, categories };
     } catch (error) {
       console.log(error);
     }

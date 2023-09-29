@@ -3,12 +3,13 @@ import ProductDetail from "../features/product/components/ProductDetail";
 import Review from "../features/Review/component/Review";
 import axios from "axios";
 
-const singleProductQuery = (id) => {
+export const singleProductQuery = (id) => {
   return {
     queryKey: ["singleProduct", id],
     queryFn: () => axios(`/api/v1/products/${id}`),
   };
 };
+
 const singleProductReview = (id) => {
   return {
     queryKey: ["review", id],

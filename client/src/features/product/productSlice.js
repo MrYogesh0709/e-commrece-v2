@@ -6,7 +6,7 @@ const initialState = {
   products: [],
   brands: [],
   categories: [],
-  isLoading: true,
+  isLoading: false,
   totalItems: 0,
   singleProduct: null,
   error: null,

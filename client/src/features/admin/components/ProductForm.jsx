@@ -19,10 +19,10 @@ export default function ProductForm() {
   const dispatch = useDispatch();
   const { id: ProductId } = useParams();
   const [openModal, setOpenModal] = useState(false);
-  const { brands, categories, isLoading } = useSelector(selectAllProducts);
+  const { isLoading } = useSelector(selectAllProducts);
   const navigate = useNavigate();
   const location = useLocation();
-  const { singleProduct } = useLoaderData();
+  const { singleProduct, brands, categories } = useLoaderData();
   const {
     register,
     handleSubmit,
@@ -96,6 +96,7 @@ export default function ProductForm() {
       product.id = ProductId;
       product.rating = singleProduct.rating || 0;
       dispatch(updateProductItemAsync(product));
+      navigate("/admin");
       reset();
     } catch (error) {
       console.log(error);

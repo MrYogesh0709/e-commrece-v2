@@ -4,6 +4,7 @@ import { ITEMS_PER_PAGE } from "../app/constants";
 import MobileFilter from "../features/product/components/MobileFilter";
 import SearchBar from "../features/product/components/SearchBar";
 import ProductList from "../features/product/components/ProductList";
+import { allBrands, allCategory } from "./HomeLayout";
 
 const allProductsQuery = (queryParams) => {
   const { search, _page, category, _sort, _order, brand } = queryParams;
@@ -21,20 +22,6 @@ const allProductsQuery = (queryParams) => {
       axios(`/api/v1/products?_limit=${ITEMS_PER_PAGE}&`, {
         params: queryParams,
       }),
-  };
-};
-
-const allBrands = () => {
-  return {
-    queryKey: ["brands"],
-    queryFn: () => axios(`/api/v1/brands`),
-  };
-};
-
-const allCategory = () => {
-  return {
-    queryKey: ["category"],
-    queryFn: () => axios(`/api/v1/categories`),
   };
 };
 
