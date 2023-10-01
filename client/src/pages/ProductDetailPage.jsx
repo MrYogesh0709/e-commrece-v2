@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductDetail from "../features/product/components/ProductDetail";
-import Review from "../features/Review/component/Review";
 import axios from "axios";
 
 export const singleProductQuery = (id) => {
@@ -30,10 +29,22 @@ export const loader =
   };
 
 const ProductDetailPage = () => {
+  const [ReviewComponent, setReviewComponent] = useState(null);
+
+  useEffect(() => {
+    // Dynamic import this is because of promise :->Standard Way -> instead use React.lazy
+    import("../features/Review/component/Review").then((module) => {
+      const Review = module.default;
+      setReviewComponent(<Review />);
+    });
+  }, []);
+
   return (
     <>
       <ProductDetail />
-      <Review />
+      {/* <Review /> */}
+      {/* Dynamically import ReviewComponent */}
+      {ReviewComponent}
     </>
   );
 };

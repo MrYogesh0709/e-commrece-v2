@@ -12,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { StarRating } from "../../common/StarRating";
 import { PencilIcon, StarIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { classNames } from "../../../app/constants";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Review = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const Review = () => {
   const { totalReviews, isLoading: loading, error } = useSelector(selectReview);
   const [openForm, setOpenForm] = useState(false);
   const [editForm, setEditFrom] = useState(false);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -51,6 +53,7 @@ const Review = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      queryClient.invalidateQueries(["review"]);
       reset();
       setOpenForm(false);
     }

@@ -1,1 +1,1 @@
-export const origin = "https://e-commrece.onrender.com";
+export const origin = "https://e-commrece-v2.onrender.com";

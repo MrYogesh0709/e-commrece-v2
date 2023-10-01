@@ -6,11 +6,11 @@ import SearchBar from "../features/product/components/SearchBar";
 import AdminProductGrid from "../features/admin/components/AdminProductGrid";
 import { allBrands, allCategory } from "./HomeLayout";
 
-const allProductsQuery = (queryParams) => {
+export const allProductsQuery = (queryParams) => {
   const { search, _page, category, _sort, _order, brand } = queryParams;
   return {
     queryKey: [
-      "products",
+      "all_products",
       search ?? "",
       category ?? "",
       brand ?? "",

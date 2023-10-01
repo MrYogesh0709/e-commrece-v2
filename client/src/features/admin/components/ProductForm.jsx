@@ -23,6 +23,7 @@ export default function ProductForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const { singleProduct, brands, categories } = useLoaderData();
+
   const {
     register,
     handleSubmit,
@@ -59,7 +60,7 @@ export default function ProductForm() {
     );
   }, [dispatch, singleProduct, setValue]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     try {
       const product = {
         ...data,
