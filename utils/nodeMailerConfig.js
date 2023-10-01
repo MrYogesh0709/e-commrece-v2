@@ -149,7 +149,7 @@ export const invoiceTemplate = function (order) {
          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
            <tr>
              <td align="center" valign="top" style="padding: 36px 24px;">
-               <a href= "https://e-commrece.onrender.com" target="_blank" style="display: inline-block;">
+               <a href= "https://e-commrece-v2.onrender.com" target="_blank" style="display: inline-block;">
                  <img src="https://res.cloudinary.com/dwyn6xk6f/image/upload/v1688825439/e-commrece.png" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                </a>
              </td>
