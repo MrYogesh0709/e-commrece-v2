@@ -37,7 +37,7 @@ const AdminOrderPage = React.lazy(() => import("./pages/AdminOrderPage"));
 const ForgotPasswordPage = React.lazy(() =>
   import("./pages/ForgotPasswordPage")
 );
-const OrderSuccessPage = React.lazy(() => import("./pages/orderSuccessPage"));
+const OrderSuccessPage = React.lazy(() => import("./pages/OrderSuccessPage"));
 const ResetPasswordPage = React.lazy(() => import("./pages/ResetPasswordPage"));
 
 import { loader as HomeLoader } from "./pages/Home";
