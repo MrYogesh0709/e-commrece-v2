@@ -8,6 +8,7 @@ import { Link, useLoaderData } from "react-router-dom";
 
 const UserOrder = () => {
   const { orders } = useLoaderData();
+
   return (
     <div className="mx-auto mt-12 bg-white dark:bg-slate-900 max-w-7xl px-4 sm:px-6 lg:px-8 ">
       {orders?.length > 0 ? (
@@ -161,40 +162,3 @@ const UserOrder = () => {
 };
 
 export default UserOrder;
-
-function UserOrderSkeleton() {
-  return (
-    <div className="px-4 py-6 sm:px-6 animate-pulse">
-      <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900 dark:text-slate-200">
-        <div className="skeleton-loader w-60 h-10 dark:bg-slate-700 bg-slate-200"></div>
-      </h1>
-      <h3 className="text-xl my-5 font-bold text-gray-900 dark:text-slate-200">
-        <div className="skeleton-loader w-80 h-7 dark:bg-slate-700 bg-slate-200"></div>
-      </h3>
-      <div className="flow-root">
-        <ul role="list" className="-my-6 divide-y divide-gray-200">
-          <li className="flex py-6">
-            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-900">
-              <div className="skeleton-loader h-full w-full object-cover object-center dark:bg-slate-700 bg-slate-200"></div>
-            </div>
-            <div className="ml-4 flex flex-1 flex-col">
-              <div className="skeleton-loader h-4 w-40 mb-2 dark:bg-slate-700 bg-slate-200"></div>
-              <div className="skeleton-loader h-3 w-32 dark:bg-slate-700 bg-slate-200"></div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div className="flex justify-between my-2 text-base font-medium text-gray-900 dark:text-slate-200">
-        <div className="skeleton-loader w-40 h-6 dark:bg-slate-700 bg-slate-200"></div>
-        <div className="skeleton-loader w-32 h-6 dark:bg-slate-700 bg-slate-200"></div>
-      </div>
-      <div className="flex justify-between my-2 text-base font-medium text-gray-900 dark:text-slate-200">
-        <div className="skeleton-loader w-48 h-6 dark:bg-slate-700 bg-slate-200"></div>
-        <div className="skeleton-loader w-28 h-6 dark:bg-slate-700 bg-slate-200"></div>
-      </div>
-      <div className="my-1 text-sm text-gray-900 font-semibold dark:text-slate-200">
-        <div className="skeleton-loader w-60 h-4 dark:bg-slate-700 bg-slate-200"></div>
-      </div>
-    </div>
-  );
-}

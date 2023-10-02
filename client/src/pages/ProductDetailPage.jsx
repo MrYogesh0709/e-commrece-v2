@@ -24,7 +24,6 @@ export const loader =
 
 const ProductDetailPage = () => {
   const [ReviewComponent, setReviewComponent] = useState(null);
-
   useEffect(() => {
     // Dynamic import this is because of promise :->Standard Way -> instead use React.lazy
     import("../features/Review/component/Review").then((module) => {
@@ -32,7 +31,6 @@ const ProductDetailPage = () => {
       setReviewComponent(<Review />);
     });
   }, []);
-
   return (
     <>
       <ProductDetail />

@@ -11,6 +11,7 @@ import notFound from ".././../../assets/no-product.svg";
 
 export default function ProductGrid() {
   const { products } = useLoaderData();
+
   if (products.length === 0) {
     return (
       <div className="lg:col-span-3 flex justify-start flex-col">
@@ -90,17 +91,3 @@ export default function ProductGrid() {
 ProductGrid.propTypes = {
   products: PropTypes.array,
 };
-
-export function SkeletonProductGrid() {
-  return (
-    <div className="animate-pulse">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 dark:bg-gray-700 lg:aspect-none group-hover:opacity-75 lg:h-60 min-h-60">
-        <div className="skeleton-loader  h-full w-full"></div>
-      </div>
-      <div>
-        <div className="skeleton-loader mt-4 h-4 w-2/3"></div>
-        <div className="skeleton-loader mt-2 h-3 w-1/2"></div>
-      </div>
-    </div>
-  );
-}

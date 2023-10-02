@@ -373,36 +373,3 @@ export default function ProductDetail() {
     </div>
   );
 }
-
-export function ProductDetailSkeleton() {
-  return (
-    <div className="bg-white animate-pulse dark:bg-slate-900">
-      <div className="pt-6">
-        <div className="py-2">
-          {/* Custom skeleton loader */}
-          <div className="skeleton-loader bg-slate-200 h-8 w-1/2 mb-4 dark:bg-gray-700 rounded-sm"></div>
-        </div>
-        <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-          <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-            {/* Custom skeleton loader */}
-            <div className="skeleton-loader bg-slate-200 h-full w-full object-cover object-center dark:bg-gray-700"></div>
-          </div>
-          <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-              {/* Custom skeleton loader */}
-              <div className="skeleton-loader bg-slate-200 h-full w-full object-cover object-center dark:bg-gray-700"></div>
-            </div>
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-              {/* Custom skeleton loader */}
-              <div className="skeleton-loader bg-slate-200 h-full w-full object-cover object-center dark:bg-gray-700"></div>
-            </div>
-          </div>
-          <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-            {/* Custom skeleton loader */}
-            <div className="skeleton-loader bg-slate-200 h-full w-full object-cover object-center dark:bg-gray-700"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
