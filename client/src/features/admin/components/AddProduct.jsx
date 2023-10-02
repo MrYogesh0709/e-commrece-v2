@@ -8,20 +8,6 @@ import {
   selectAllProducts,
 } from "../../product/productSlice";
 import { colors, sizes } from "../../../app/constants";
-import { allBrands, allCategory } from "../../../pages/HomeLayout";
-
-export const loader = (queryClient) => async () => {
-  try {
-    const { data: brands } = await queryClient.ensureQueryData(allBrands());
-    const { data: categories } = await queryClient.ensureQueryData(
-      allCategory()
-    );
-    return { brands, categories };
-  } catch (error) {
-    console.log(error);
-  }
-  return null;
-};
 
 export default function AddProduct() {
   const dispatch = useDispatch();

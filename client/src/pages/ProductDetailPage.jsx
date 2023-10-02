@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductDetail from "../features/product/components/ProductDetail";
 import axios from "axios";
-
-export const singleProductQuery = (id) => {
-  return {
-    queryKey: ["singleProduct", id],
-    queryFn: () => axios(`/api/v1/products/${id}`),
-  };
-};
+import { singleProductQuery } from "../app/reactQuery";
 
 const singleProductReview = (id) => {
   return {
