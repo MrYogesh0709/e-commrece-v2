@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectAuth } from "../../auth/authSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Review = ({ review, setOpenForm, openForm, setValue }) => {
   const { user } = useSelector(selectAuth);
@@ -25,6 +26,7 @@ const Review = ({ review, setOpenForm, openForm, setValue }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["review"]);
+      toast.success("Review removed..");
     },
   });
 
