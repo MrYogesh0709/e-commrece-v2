@@ -26,7 +26,7 @@ const Review = ({ review, setOpenForm, openForm, setValue }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["review"]);
-      toast.success("Review removed..");
+      toast.success("Review Deleted");
     },
   });
 
