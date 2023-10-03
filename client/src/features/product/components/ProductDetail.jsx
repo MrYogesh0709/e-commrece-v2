@@ -8,14 +8,19 @@ import { toast } from "react-toastify";
 import { selectAuth } from "../../auth/authSlice";
 import { scrollToReviewSection } from "../../common/SmoothScroll";
 import { classNames, formatPrice } from "../../../app/constants";
+import { singleProductReview } from "../../../pages/ProductDetailPage";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
-  const { product, count: totalReviews } = useLoaderData();
+  const { product } = useLoaderData();
   const { cartItems } = useSelector(selectCart);
   const { user } = useSelector(selectAuth);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const {
+    data: { count: totalReviews },
+  } = useQuery(singleProductReview(product.id));
 
   const handleCart = (e) => {
     e.preventDefault();
