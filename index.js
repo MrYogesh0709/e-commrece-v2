@@ -32,10 +32,21 @@ import {
   stripeController,
   stripeWebhookController,
 } from "./controller/stripe.controller.js";
+import helmet from "helmet";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+//*security
+server.use(helmet());
+server.use(
+  rateLimiter({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  })
+);
 
 // only when ready to deploy
+const __dirname = dirname(fileURLToPath(import.meta.url));
 server.use(express.static(path.resolve(__dirname, "./client/dist")));
 
 //:-> Webhook
