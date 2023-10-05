@@ -33,11 +33,12 @@ import {
   stripeWebhookController,
 } from "./controller/stripe.controller.js";
 import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 
 //*security
 server.use(helmet());
 server.use(
-  rateLimiter({
+  rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
