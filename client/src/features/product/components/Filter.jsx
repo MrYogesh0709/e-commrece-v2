@@ -80,10 +80,12 @@ export const Filter = () => {
                       <input
                         id={`filter-${section.id}-${optionIdx}`}
                         name={`${section.id}`}
-                        defaultValue={option.value}
+                        value={option.value}
                         type="checkbox"
-                        onChange={(e) => handleFilterChange(e, section, option)}
-                        defaultChecked={option.checked}
+                        onChange={(e) => handleFilterChange(e)}
+                        checked={searchParams
+                          .get(section.id)
+                          ?.includes(option.value)}
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                       />
                       <label
