@@ -35,6 +35,8 @@ import {
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 
+// Enable trust proxy
+app.set("trust proxy", true);
 //*security
 server.use(helmet());
 server.use(
