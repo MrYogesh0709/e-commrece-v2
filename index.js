@@ -33,10 +33,9 @@ import {
   stripeWebhookController,
 } from "./controller/stripe.controller.js";
 import helmet from "helmet";
-import { rateLimit } from "express-rate-limit";
 
 //*security
-server.use(helmet());
+// server.use(helmet());
 
 // only when ready to deploy
 const __dirname = dirname(fileURLToPath(import.meta.url));
