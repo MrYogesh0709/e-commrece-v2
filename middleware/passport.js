@@ -5,7 +5,6 @@ import UserModel from "../models/User.model.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { jwtOptions, sanitizeUser } from "./customMiddleware.js";
-import { UnauthenticatedError } from "../errors/customError.js";
 
 passport.use(
   "local",

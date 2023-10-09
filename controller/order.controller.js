@@ -103,7 +103,7 @@ export const updateOrder = async (req, res) => {
   res.status(StatusCodes.OK).json(order);
 };
 
-//TODO:not on frontend yet or we can just add delete flag:)
+//INFO:not on frontend yet or we can just add delete flag:)
 
 export const deleteOrder = async (req, res) => {
   const { id: orderId } = req.params;
