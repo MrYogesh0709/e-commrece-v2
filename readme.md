@@ -34,11 +34,12 @@ CLOUDINARY_CLOUD_NAME = YOUR_CLOUDINARY_CLOUD_NAME
 CLOUDINARY_API_KEY = YOUR_CLOUDINARY_API_KEY
 CLOUDINARY_API_SECRET = YOUR_CLOUDINARY_API_SECRET
 ```
+### we've use nodemailer for mail so get your email and password form Mail App Password
 
 ### start development server
 
 ```
-npm run start
+npm start
 ```
 
 #### Hosted on render server will disable after 15 minutes if no request comes so wait for 30 seconds to restart server automatically
