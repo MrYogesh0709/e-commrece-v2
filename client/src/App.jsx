@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -20,13 +20,16 @@ import {
   HomeLayout,
   Home,
   ProductDetailPage,
+  ResetPasswordPage,
+  ForgotPasswordPage,
+  OrderSuccessPage,
+  VerifyMailPage,
+  StripePay,
 } from "./pages";
 
 //* lazy load
-const StripePay = React.lazy(() => import("./pages/StripePay"));
 const UserProfilePage = React.lazy(() => import("./pages/UserProfilePage"));
 const CartPage = React.lazy(() => import("./pages/CartPage"));
-const VerifyMailPage = React.lazy(() => import("./pages/VerifyMailPage"));
 const Checkout = React.lazy(() => import("./pages/Checkout"));
 const UserOrderPage = React.lazy(() => import("./pages/UserOrderPage"));
 const AdminHome = React.lazy(() => import("./pages/AdminHome"));
@@ -34,15 +37,10 @@ const AdminProductFormPage = React.lazy(() =>
   import("./pages/AdminProductFormPage")
 );
 const AdminOrderPage = React.lazy(() => import("./pages/AdminOrderPage"));
-const ForgotPasswordPage = React.lazy(() =>
-  import("./pages/ForgotPasswordPage")
-);
-const OrderSuccessPage = React.lazy(() => import("./pages/OrderSuccessPage"));
-const ResetPasswordPage = React.lazy(() => import("./pages/ResetPasswordPage"));
 
+// Loaders
 import { loader as HomeLoader } from "./pages/Home";
 import { loader as SingleProductLoader } from "./pages/ProductDetailPage";
-import Loader from "./features/common/Loader";
 import {
   AdminHomeLoader,
   AdminOrderLoader,

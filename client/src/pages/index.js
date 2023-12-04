@@ -5,3 +5,8 @@ export { default as LoginPage } from "./LoginPage";
 export { default as SignUpPage } from "./SignUpPage";
 export { default as SinglePageError } from "./SinglePageError";
 export { default as ProductDetailPage } from "./ProductDetailPage";
+export { default as ResetPasswordPage } from "./ResetPasswordPage.jsx";
+export { default as OrderSuccessPage } from "./OrderSuccessPage.jsx";
+export { default as ForgotPasswordPage } from "./ForgotPasswordPage.jsx";
+export { default as VerifyMailPage } from "./VerifyMailPage.jsx";
+export { default as StripePay } from "./StripePay.jsx";
