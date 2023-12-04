@@ -1,12 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Navbar from "../features/navbar/Navbar";
 import Footer from "../features/common/Footer";
-import { Outlet, useLocation, useNavigation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Loader from "../features/common/Loader";
 
 const HomeLayout = () => {
   const { pathname } = useLocation();
-  const { state } = useNavigation();
   const titleMap = {
     "/": "Products",
     "/cart": "Cart",
@@ -20,7 +19,9 @@ const HomeLayout = () => {
   return (
     <>
       <Navbar title={title}>
-        {state === "loading" ? <Loader /> : <Outlet />}
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
       </Navbar>
       <Footer />
     </>

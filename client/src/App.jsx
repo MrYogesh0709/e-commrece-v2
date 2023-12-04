@@ -235,9 +235,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="app dark:bg-slate-900">
-        <Suspense fallback={<Loader />}>
-          <RouterProvider router={router}></RouterProvider>
-        </Suspense>
+        <RouterProvider router={router}></RouterProvider>
         <ReactQueryDevtools initialIsOpen={false} />
         <ToastContainer autoClose={2000} theme="dark" position="bottom-left" />
       </div>

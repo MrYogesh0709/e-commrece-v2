@@ -5,7 +5,6 @@ import MobileFilter from "../features/product/components/MobileFilter";
 import SearchBar from "../features/product/components/SearchBar";
 import ProductList from "../features/product/components/ProductList";
 import { allBrands, allCategory } from "../app/reactQuery";
-import { useNavigate, useNavigation } from "react-router-dom";
 
 const allProductsQuery = (queryParams) => {
   const { search, _page, category, _sort, _order, brand } = queryParams;
