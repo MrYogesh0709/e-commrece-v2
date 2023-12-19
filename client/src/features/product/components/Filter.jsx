@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 export const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { brands, categories } = useLoaderData();
+
   const filters = [
     {
       id: "category",
@@ -75,27 +76,30 @@ export const Filter = () => {
               </h3>
               <Disclosure.Panel className="pt-6">
                 <div className="space-y-4">
-                  {section.options.map((option, optionIdx) => (
-                    <div key={option.value} className="flex items-center">
-                      <input
-                        id={`filter-${section.id}-${optionIdx}`}
-                        name={`${section.id}`}
-                        value={option.value}
-                        type="checkbox"
-                        onChange={(e) => handleFilterChange(e)}
-                        checked={searchParams
-                          .get(section.id)
-                          ?.includes(option.value)}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                      />
-                      <label
-                        htmlFor={`filter-${section.id}-${optionIdx}`}
-                        className="ml-3 text-sm text-gray-600 dark:text-slate-200"
-                      >
-                        {option.label}
-                      </label>
-                    </div>
-                  ))}
+                  {section.options.map((option, optionIdx) => {
+                    return (
+                      <div key={option.value} className="flex items-center">
+                        <input
+                          id={`filter-${section.id}-${optionIdx}`}
+                          name={`${section.id}`}
+                          value={option.value}
+                          type="checkbox"
+                          onChange={(e) => handleFilterChange(e)}
+                          checked={searchParams
+                            .get(section.id)
+                            ?.split(",")
+                            .includes(option.value)}
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <label
+                          htmlFor={`filter-${section.id}-${optionIdx}`}
+                          className="ml-3 text-sm text-gray-600 dark:text-slate-200"
+                        >
+                          {option.label}
+                        </label>
+                      </div>
+                    );
+                  })}
                 </div>
               </Disclosure.Panel>
             </>
