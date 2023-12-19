@@ -25,7 +25,6 @@ export const Filter = () => {
     const { name, value, checked } = e.target;
     setSearchParams((prevParams) => {
       let values = prevParams.get(name)?.split(",") || [];
-      console.log(checked);
       if (checked) {
         // append value to array
         values.push(value);
