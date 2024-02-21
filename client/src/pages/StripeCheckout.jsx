@@ -6,7 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 import PropTypes from "prop-types";
 
-export default function StripeCheckout({ orderId }) {
+export default function StripeCheckout({ orderId, clientSecret }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -16,10 +16,6 @@ export default function StripeCheckout({ orderId }) {
     if (!stripe) {
       return;
     }
-
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    );
 
     if (!clientSecret) {
       return;
@@ -58,7 +54,6 @@ export default function StripeCheckout({ orderId }) {
         return_url: `${window.location.origin}/order-success/${orderId}`,
       },
     });
-
     if (error.type === "card_error" || error.type === "validation_error") {
       setMessage(error.message);
     } else {
@@ -84,11 +79,17 @@ export default function StripeCheckout({ orderId }) {
             )}
           </span>
         </button>
-        {message && <div id="payment-message">{message}</div>}
+        {message && (
+          <div id="payment-message" className="text-red-500">
+            {message}
+          </div>
+        )}
       </form>
     </div>
   );
 }
+
 StripeCheckout.propTypes = {
   orderId: PropTypes.string,
+  clientSecret: PropTypes.string,
 };

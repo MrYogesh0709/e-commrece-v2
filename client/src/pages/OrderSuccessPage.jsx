@@ -7,7 +7,6 @@ import { resetCartAsync } from "../features/cart/cartSlice";
 const OrderSuccessPage = () => {
   const { id: orderID } = useParams();
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(resetCartAsync());
   }, [dispatch]);

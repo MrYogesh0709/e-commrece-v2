@@ -21,8 +21,10 @@ export default function StripePay() {
       }),
     })
       .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+      .then((data) => {
+        setClientSecret(data.clientSecret);
+      });
+  }, [state]);
 
   const isDarkModePreferred = window.matchMedia(
     "(prefers-color-scheme: dark)"
@@ -31,7 +33,6 @@ export default function StripePay() {
   const appearance = {
     theme: isDarkModePreferred ? "night" : "stripe",
   };
-
   const options = {
     clientSecret,
     appearance,
@@ -40,12 +41,12 @@ export default function StripePay() {
   if (!clientSecret) {
     return <PageNotFound />;
   }
-
+  console.log(clientSecret);
   return (
     <div className="Stripe ">
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
-          <StripeCheckout orderId={state.id} />
+          <StripeCheckout orderId={state.id} clientSecret={clientSecret} />
         </Elements>
       )}
     </div>

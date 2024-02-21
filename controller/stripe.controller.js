@@ -6,9 +6,8 @@ const endpointSecret = process.env.WEBHOOK_ENDPOINT;
 
 export const stripeController = async (req, res) => {
   const { totalAmount, orderId } = req.body;
-  // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripeClient.paymentIntents.create({
-    amount: Math.round(totalAmount * 100), //for decimal stripe
+    amount: Math.round(totalAmount * 100),
     currency: "inr",
     automatic_payment_methods: {
       enabled: true,
