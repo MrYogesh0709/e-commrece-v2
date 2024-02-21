@@ -13,10 +13,10 @@ export const fetchUserById = async (req, res) => {
   if (!user) {
     throw new NotFoundError(`No user with id ${id}`);
   }
-  const { email, addresses, role, name, profileImage } = user;
+  const { email, addresses, role, name, profileImage, phone } = user;
   res
     .status(StatusCodes.OK)
-    .json({ id, email, addresses, role, name, profileImage });
+    .json({ id, email, addresses, role, name, profileImage, phone });
 };
 
 export const updateUser = async (req, res) => {

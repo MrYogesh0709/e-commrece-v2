@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateOrderAsync } from "../../order/orderSlice";
+import React, { useState } from "react";
 import {
   firstLatterCapital,
   formatPrice,
@@ -17,7 +15,6 @@ import {
 } from "react-router-dom";
 
 const AdminOrder = () => {
-  const dispatch = useDispatch();
   const [editOrderId, setEditOrderId] = useState(-1);
   const [openModal, setOpenModal] = useState(null);
   const [status, setStatus] = useState(null);
@@ -37,7 +34,6 @@ const AdminOrder = () => {
       return prevParams;
     });
   };
-
   const handleShow = (e, order) => {
     //TODO:DO SOMETHING HERE
     // console.log(order);
@@ -63,7 +59,10 @@ const AdminOrder = () => {
       status: status ?? order.status,
       paymentStatus: paymentStatus ?? order.paymentStatus,
     };
-    dispatch(updateOrderAsync(updatedOrder));
+    submit(updatedOrder, {
+      method: "patch",
+      action: `/admin/order/${order.id}`,
+    });
     setEditOrderId(-1);
     setStatus(null);
   };
@@ -72,31 +71,14 @@ const AdminOrder = () => {
     <div className="overflow-x-auto min-h-screen">
       <div className="flex items-center justify-center font-sans overflow-x-auto">
         <div className="w-full">
-          {/* <AdminOrderSkeleton /> */}
           {orders.length > 0 ? (
             <Form className="bg-white dark:bg-slate-900 shadow-md rounded my-6">
-              <table className=" w-full table-auto">
+              <table className="w-full table-auto">
                 <thead>
                   <tr className="bg-gray-200 dark:bg-slate-700 text-gray-600 dark:text-slate-300 uppercase text-sm leading-normal">
+                    <th className="px-2 py-3 text-left">Items</th>
                     <th
-                      className="py-3 px-6 text-left cursor-pointer"
-                      onClick={() =>
-                        handleSort({
-                          sort: "id",
-                          order: order === "asc" ? "desc" : "asc",
-                        })
-                      }
-                    >
-                      Order# &nbsp;
-                      {sort === "id" && order === "asc" ? (
-                        <ArrowUpIcon className="w-6 h-6 inline" />
-                      ) : (
-                        <ArrowDownIcon className="w-6 h-6 inline" />
-                      )}
-                    </th>
-                    <th className="py-3 px-6 text-left">Items</th>
-                    <th
-                      className="py-3 px-6 text-center cursor-pointer"
+                      className="px-2 py-3 text-center cursor-pointer"
                       onClick={() =>
                         handleSort({
                           sort: "totalAmount",
@@ -111,12 +93,12 @@ const AdminOrder = () => {
                         <ArrowDownIcon className="w-6 h-6 inline" />
                       )}
                     </th>
-                    <th className="py-3 px-6 text-center">Shipping Address</th>
-                    <th className="py-3 px-6 text-center">Order Status</th>
-                    <th className="py-3 px-6 text-center">Payment Method</th>
-                    <th className="py-3 px-6 text-center">Payment Status</th>
+                    <th className="px-2 py-3">Shipping Address</th>
+                    <th className="px-2 py-3">Order Status</th>
+                    <th className="px-2 py-3">Payment Method</th>
+                    <th className="px-2 py-3">Payment Status</th>
                     <th
-                      className="py-3 px-6 text-center cursor-pointer"
+                      className="px-2 py-3 text-center cursor-pointer"
                       onClick={() =>
                         handleSort({
                           sort: "createdAt",
@@ -124,7 +106,7 @@ const AdminOrder = () => {
                         })
                       }
                     >
-                      Order Time &nbsp;
+                      <div>Order Time &nbsp;</div>
                       {sort === "createdAt" && order === "asc" ? (
                         <ArrowUpIcon className="w-6 h-6 inline" />
                       ) : (
@@ -132,7 +114,7 @@ const AdminOrder = () => {
                       )}
                     </th>
                     <th
-                      className="py-3 px-6 text-center cursor-pointer"
+                      className="px-2 py-3 text-center cursor-pointer"
                       onClick={() =>
                         handleSort({
                           sort: "updatedAt",
@@ -147,7 +129,7 @@ const AdminOrder = () => {
                         <ArrowDownIcon className="w-6 h-6 inline" />
                       )}
                     </th>
-                    <th className="py-3 px-6 text-center">Actions</th>
+                    <th className="px-2 py-3 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 dark:text-slate-300 text-sm font-light">
@@ -156,39 +138,35 @@ const AdminOrder = () => {
                       className="border-b border-gray-200 hover:bg-gray-100 dark:hover:bg-slate-600"
                       key={order.id}
                     >
-                      <td className="py-3 px-6 text-left whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="mr-2"></div>
-                          <span className="font-medium">{order.id} </span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-6 text-left">
+                      <td className="py-2 px-2 text-left">
                         {order?.items?.length > 0 &&
                           order.items.map((item) => (
                             <div
-                              className="flex items-center"
+                              className="flex  flex-col"
                               key={item.product.id}
                             >
-                              <div className="mr-2">
-                                <img
-                                  className="w-6 h-6 rounded-full"
-                                  src={item?.product?.thumbnail}
-                                />
+                              <div>
+                                <span className="font-bold">Name:</span>
+                                {item?.product.title}
                               </div>
-                              <span>
-                                {item?.product.title} - #{item?.quantity} -
+                              <div>
+                                <span className="font-bold">Quantity:</span>
+                                {item?.quantity}
+                              </div>
+                              <div>
+                                <span className="font-bold">Price:</span>
                                 {formatPrice(item?.product.discountPrice)}
-                              </span>
+                              </div>
                             </div>
                           ))}
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-2 px-2 text-center">
                         <div className="flex items-center justify-center">
                           {formatPrice(order.totalAmount)}
                         </div>
                       </td>
-                      <td className="py-3 px-6 text-center">
-                        <div className="flex items-center justify-center flex-col">
+                      <td className="py-2 px-2">
+                        <div className="flex flex-col">
                           <strong>Name:{order.selectedAddress.name}</strong>
                           <div>Email:{order.selectedAddress.email}</div>
                           <div>Phone:{order.selectedAddress.phone}</div>
@@ -198,7 +176,7 @@ const AdminOrder = () => {
                           <div>PinCode:{order.selectedAddress.pinCode}</div>
                         </div>
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-2 px-2 text-center">
                         {order.id === editOrderId ? (
                           <>
                             <Modal
@@ -232,12 +210,12 @@ const AdminOrder = () => {
                           </span>
                         )}
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-2 px-2 text-center">
                         <div className="flex items-center justify-center">
                           {order.paymentMethod}
                         </div>
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-2 px-2 text-center">
                         {order.id === editOrderId ? (
                           <>
                             <select
@@ -263,18 +241,18 @@ const AdminOrder = () => {
                           </span>
                         )}
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      <td className="p-2 text-center">
                         <div className="flex items-center justify-center">
                           {new Date(order.createdAt).toLocaleString("en-IN")}
                         </div>
                       </td>
 
-                      <td className="py-3 px-6 text-center">
+                      <td className="p-2 text-center">
                         <div className="flex items-center justify-center">
                           {new Date(order.updatedAt).toLocaleString("en-IN")}
                         </div>
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      <td className="p-2 text-center">
                         <div className="flex item-center justify-center">
                           <button
                             onClick={(e) => handleShow(e, order)}

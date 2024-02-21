@@ -106,6 +106,15 @@ const ForgotPasswordPage = () => {
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-slate-200">
           {msg}
         </h2>
+        <p className="mt-10 text-center text-sm text-gray-500">
+          Send me back to?{" "}
+          <Link
+            to="/login"
+            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+          >
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );

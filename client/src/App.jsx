@@ -49,6 +49,8 @@ import {
   UserOrderLoader,
 } from "./app/loader";
 
+import { action as updateOrder } from "./app/action";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -142,7 +144,7 @@ const router = createBrowserRouter([
         errorElement: <SinglePageError />,
       },
       {
-        path: "admin/order",
+        path: "admin/orders",
         element: (
           <ProtectedAdmin>
             <AdminOrderPage />
@@ -152,6 +154,11 @@ const router = createBrowserRouter([
         errorElement: <SinglePageError />,
       },
     ],
+  },
+  {
+    path: "admin/order/:id",
+    element: <ProtectedAdmin />,
+    action: updateOrder(queryClient),
   },
   {
     path: "/login",

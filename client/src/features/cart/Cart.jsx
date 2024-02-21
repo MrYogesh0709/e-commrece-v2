@@ -39,11 +39,7 @@ const Cart = () => {
     dispatch(removeCartItemAsync(itemId));
   };
 
-  return isLoading ? (
-    <div className="h-screen">
-      <CartSkeleton />
-    </div>
-  ) : (
+  return (
     <>
       <div className="mx-auto  bg-white max-w-7xl px-4 sm:px-6 lg:px-8 dark:bg-slate-900">
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -85,6 +81,7 @@ const Cart = () => {
                                 Qty
                               </label>
                               <select
+                                disabled={isLoading}
                                 onChange={(e) => handleQuantity(e, item)}
                                 className="rounded cursor-pointer py-1 px-8 dark:bg-slate-700 dark:text-slate-200"
                                 value={item.quantity}
@@ -223,7 +220,7 @@ const Cart = () => {
         ) : (
           <Link
             to="/"
-            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
           >
             Continue Shopping
           </Link>
@@ -234,33 +231,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-function CartSkeleton() {
-  return (
-    <div className="mx-auto mt-12 bg-white animate-pulse dark:bg-slate-900 max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-6 sm:px-6">
-        <div className="skeleton-loader text-4xl my-5 font-bold tracking-tight text-gray-900 bg-slate-200 dark:text-slate-200 h-10 w-80 dark:bg-slate-700"></div>
-        <div className="flow-root">
-          <div role="list" className="-my-6 divide-y divide-gray-200">
-            <div className="flex py-6">
-              <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-900">
-                <div className="skeleton-loader h-full dark:bg-slate-700 bg-slate-200"></div>
-              </div>
-              <div className="ml-4 flex flex-1 flex-col">
-                <div className="skeleton-loader h-4 w-40 mb-2 dark:bg-slate-700 bg-slate-200"></div>
-                <div className="skeleton-loader h-3 w-20 dark:bg-slate-700 bg-slate-200"></div>
-                <div className="skeleton-loader h-3 w-32 mt-2 dark:bg-slate-700 bg-slate-200"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-t border-gray-200 dark:dark:bg-slate-700  bg-slate-200 px-4 py-6 sm:px-6">
-        <div className="skeleton-loader h-6 w-24 mb-4 dark:bg-slate-700 bg-slate-200"></div>
-        <div className="skeleton-loader h-3 w-40 mb-2 dark:bg-slate-700 bg-slate-200"></div>
-        <div className="skeleton-loader flex items-center justify-center px-6 py-3 h-6 w-40 dark:bg-slate-700 bg-slate-200"></div>
-      </div>
-    </div>
-  );
-}

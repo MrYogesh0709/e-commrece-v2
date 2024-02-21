@@ -65,10 +65,20 @@ export const editAddress = async (req, res) => {
   user.addresses = await Address.find({ _id: { $in: user.addresses } });
 
   await user.save();
-  const { addresses, createdAt, email, id, role, updatedAt } = user;
+  const { addresses, createdAt, email, id, role, updatedAt, profileImage } =
+    user;
   return res
     .status(StatusCodes.OK)
-    .json({ addresses, createdAt, email, id, role, updatedAt });
+    .json({
+      addresses,
+      createdAt,
+      email,
+      id,
+      role,
+      updatedAt,
+      profileImage,
+      name,
+    });
 };
 
 export const deleteAddress = async (req, res) => {
@@ -93,8 +103,24 @@ export const deleteAddress = async (req, res) => {
   user.addresses.splice(addressIndex, 1);
   user.populate("addresses");
   await user.save();
-  const { addresses, createdAt, email, id, role, updatedAt } = user;
-  return res
-    .status(StatusCodes.OK)
-    .json({ addresses, createdAt, email, id, role, updatedAt });
+  const {
+    addresses,
+    createdAt,
+    email,
+    id,
+    role,
+    updatedAt,
+    profileImage,
+    name,
+  } = user;
+  return res.status(StatusCodes.OK).json({
+    addresses,
+    createdAt,
+    email,
+    id,
+    role,
+    updatedAt,
+    profileImage,
+    name,
+  });
 };

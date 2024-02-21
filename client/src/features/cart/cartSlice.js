@@ -97,12 +97,12 @@ export const cartSlice = createSlice({
       })
       .addCase(removeCartItemAsync.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.cartItems.findIndex(
-          (items) => items.id === action.payload.id
+        state.cartItems = state.cartItems.filter(
+          (item) => item.id !== action.payload.id
         );
-        state.cartItems.splice(index, 1);
         toast.success("Cart Item removed");
       })
+
       .addCase(removeCartItemAsync.rejected, (state) => {
         state.isLoading = false;
       })

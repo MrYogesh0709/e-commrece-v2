@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useSubmit } from "react-router-dom";
 import {
   openCart,
   removeCartItemAsync,
@@ -28,7 +28,7 @@ const Checkout = () => {
     reset,
     formState: { errors },
   } = useForm();
-
+  const submit = useSubmit();
   const totalAmount = Math.round(
     products.reduce(
       (totalAmount, item) =>
@@ -70,6 +70,7 @@ const Checkout = () => {
         selectedAddress,
       };
       dispatch(createOrderAsync(order));
+      submit(order);
     } else {
       toast.error("Select a payment method and Address");
     }
@@ -551,13 +552,13 @@ const Checkout = () => {
                   Order Now
                 </div>
               </div>
-              <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+              <div className="mt-6 flex justify-center text-center text-sm text-gray-400">
                 <p>
                   or{" "}
                   <Link
                     to="/"
                     type="button"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                    className="font-medium text-white hover:text-slate-200"
                     onClick={() => dispatch(openCart)}
                   >
                     Continue Shopping

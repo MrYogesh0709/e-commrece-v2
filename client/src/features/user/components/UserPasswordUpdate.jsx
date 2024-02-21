@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { updatePasswordAsync } from "../userSlice";
+import { selectUser, updatePasswordAsync } from "../userSlice";
 
 const UserPasswordUpdate = () => {
   const dispatch = useDispatch();
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
+  const { isLoading } = useSelector(selectUser);
 
   const {
     register,
@@ -146,6 +147,7 @@ const UserPasswordUpdate = () => {
               </button>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Save

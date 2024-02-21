@@ -54,5 +54,5 @@ export const DeleteItCartItem = async (req, res) => {
   if (!cartDeleted) {
     throw new NotFoundError(`No item with id : ${cartId}`);
   }
-  res.status(StatusCodes.OK).json({ msg: "Item removed" });
+  res.status(StatusCodes.OK).json({ msg: "Item removed", id: cartId });
 };

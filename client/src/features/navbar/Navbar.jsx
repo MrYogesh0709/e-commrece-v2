@@ -19,7 +19,7 @@ import { selectAuth } from "../auth/authSlice";
 const navigation = [
   { name: "Products", link: "/", user: true },
   { name: "Products", link: "/admin", admin: true },
-  { name: "Orders", link: "/admin/order", admin: true },
+  { name: "Orders", link: "/admin/orders", admin: true },
 ];
 
 const userNavigation = [

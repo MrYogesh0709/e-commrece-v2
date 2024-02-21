@@ -14,7 +14,8 @@ const UserProfileAddress = () => {
   const [selectedEditIndex, setSelectedEditIndex] = useState(-1);
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
   const [openModal, setOpenModal] = useState(null);
-  const { userInfo: user } = useSelector(selectUser);
+  const { userInfo: user, isLoading } = useSelector(selectUser);
+
   const {
     register,
     handleSubmit,
@@ -510,6 +511,7 @@ const UserProfileAddress = () => {
                     </button>
                     <button
                       type="submit"
+                      disabled={isLoading}
                       className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Edit address
@@ -560,6 +562,7 @@ const UserProfileAddress = () => {
                 />
                 <button
                   type="button"
+                  disabled={isLoading}
                   onClick={() => setOpenModal(address.id)}
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >

@@ -45,16 +45,14 @@ const UserProfileImage = () => {
             onChange={handleImageChange}
             className="hidden"
           />
-          {!isLoading && (
-            <img
-              className="w-32 h-32 rounded-full cursor-pointer"
-              src={
-                user?.profileImage ||
-                "https://img.freepik.com/free-icon/user_318-159711.jpg?size=626&ext=jpg&ga=GA1.1.503580097.1688107904&semt=ais"
-              }
-              alt="Profile Image"
-            />
-          )}
+          <img
+            className="w-32 h-32 rounded-full cursor-pointer"
+            src={
+              user?.profileImage ||
+              "https://img.freepik.com/free-icon/user_318-159711.jpg?size=626&ext=jpg&ga=GA1.1.503580097.1688107904&semt=ais"
+            }
+            alt="Profile Image"
+          />
         </label>
         <button
           type="submit"
