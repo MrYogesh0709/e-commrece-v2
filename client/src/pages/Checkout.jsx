@@ -1,27 +1,40 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useSubmit } from "react-router-dom";
+import { Link, Navigate, useSubmit, useActionData } from "react-router-dom";
 import {
   openCart,
   removeCartItemAsync,
   selectCart,
 } from "../features/cart/cartSlice";
 import { useForm } from "react-hook-form";
-import { createOrderAsync, selectOrder } from "../features/order/orderSlice";
 import { addAddressAsync, selectUser } from "../features/user/userSlice";
 import Modal from "../features/common/Modal";
 import { toast } from "react-toastify";
 import { classNames, formatPrice } from "../app/constants";
+import axios from "axios";
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  try {
+    const response = await axios.post("/api/v1/order", data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(null);
-  const { cartItems: products } = useSelector(selectCart);
+  const { cartItems } = useSelector(selectCart);
   const { userInfo: user } = useSelector(selectUser);
-  const { currentOrder } = useSelector(selectOrder);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cash");
+  const data = useActionData();
+
   const {
     register,
     handleSubmit,
@@ -30,14 +43,14 @@ const Checkout = () => {
   } = useForm();
   const submit = useSubmit();
   const totalAmount = Math.round(
-    products.reduce(
+    cartItems.reduce(
       (totalAmount, item) =>
         item.product.discountPrice * item.quantity + totalAmount,
       0
     )
   );
 
-  const totalItems = products.reduce(
+  const totalItems = cartItems.reduce(
     (totalItems, product) => product.quantity + totalItems,
     0
   );
@@ -62,25 +75,26 @@ const Checkout = () => {
   const handleOrder = () => {
     if (selectedAddress && paymentMethod) {
       const order = {
-        items: products,
+        cartItems: JSON.stringify(cartItems),
         totalAmount,
         totalItems,
-        user,
+        user: JSON.stringify(user),
         paymentMethod,
-        selectedAddress,
+        selectedAddress: JSON.stringify(selectedAddress),
       };
-      dispatch(createOrderAsync(order));
-      submit(order);
+      submit(order, {
+        method: "POST",
+      });
     } else {
       toast.error("Select a payment method and Address");
     }
   };
 
-  if (products.length === 0) return <Navigate to={"/"} replace={true} />;
-  if (currentOrder && currentOrder.paymentMethod === "cash")
-    return <Navigate to={`/order-success/${currentOrder.id}`} replace={true} />;
-  if (currentOrder && currentOrder.paymentMethod === "card")
-    return <Navigate to={`/stripe-pay`} replace={true} />;
+  if (cartItems.length === 0) return <Navigate to={"/"} replace={true} />;
+  if (data && data.paymentMethod === "cash")
+    return <Navigate to={`/order-success/${data.id}`} replace={true} />;
+  if (data && data.paymentMethod === "card")
+    return <Navigate to={`/stripe-pay`} state={data} replace={true} />;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -420,8 +434,8 @@ const Checkout = () => {
 
               <div className="flow-root">
                 <ul role="list" className="-my-6 divide-y divide-gray-200">
-                  {products?.length > 0 &&
-                    products.map((item) => (
+                  {cartItems?.length > 0 &&
+                    cartItems.map((item) => (
                       <li key={item.id} className="flex py-6">
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img

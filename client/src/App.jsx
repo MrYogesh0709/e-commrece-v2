@@ -50,6 +50,7 @@ import {
 } from "./app/loader";
 
 import { action as updateOrder } from "./app/action";
+import { action as orderItem } from "./pages/Checkout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -93,6 +94,7 @@ const router = createBrowserRouter([
           </Protected>
         ),
         errorElement: <SinglePageError />,
+        action: orderItem,
       },
       {
         path: "orders",
@@ -102,7 +104,8 @@ const router = createBrowserRouter([
           </Protected>
         ),
         errorElement: <SinglePageError />,
-        loader: UserOrderLoader(queryClient),
+        // loader: UserOrderLoader(queryClient),
+        loader: UserOrderLoader,
       },
       {
         path: "profile",

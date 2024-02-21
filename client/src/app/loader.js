@@ -4,11 +4,11 @@ import {
   allCategory,
   allProductsQuery,
   singleProductQuery,
-  userOrderQuery,
 } from "./reactQuery";
+import axios from "axios";
 
-export const UserOrderLoader = (queryClient) => async () => {
-  const { data: orders } = await queryClient.ensureQueryData(userOrderQuery());
+export const UserOrderLoader = async () => {
+  const { data: orders } = await axios("/api/v1/order/user");
   return { orders };
 };
 

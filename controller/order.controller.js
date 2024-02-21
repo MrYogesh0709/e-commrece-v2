@@ -5,14 +5,13 @@ import ProductModel from "../models/Product.model.js";
 import { invoiceTemplate, sendMail } from "../utils/nodeMailerConfig.js";
 
 export const createOrder = async (req, res) => {
-  const {
-    items: cartItems,
-    totalAmount,
-    totalItems,
-    user,
-    paymentMethod,
-    selectedAddress,
-  } = req.body;
+  const { totalAmount, totalItems, paymentMethod } = req.body;
+  const cartItems = JSON.parse(req.body.cartItems);
+  const user = JSON.parse(req.body.user);
+  const selectedAddress = JSON.parse(req.body.selectedAddress);
+  if (!user || !selectedAddress || !cartItems) {
+    throw new BadRequestError("Please provide all values");
+  }
   if (!cartItems || cartItems.length < 1) {
     throw new BadRequestError("No cart items provided");
   }

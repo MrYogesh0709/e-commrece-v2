@@ -1,20 +1,15 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
-import { resetOrder } from "../features/order/orderSlice";
 import { useDispatch } from "react-redux";
 import { resetCartAsync } from "../features/cart/cartSlice";
 
 const OrderSuccessPage = () => {
   const { id: orderID } = useParams();
-  // const { currentOrder } = useSelector(selectOrder);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(resetCartAsync());
-    //info:reset order is like reset order to frontend we can't delete order once order
-    // cart should be empty and then order should be in my order page
-    dispatch(resetOrder());
   }, [dispatch]);
 
   if (!orderID) return <Navigate to="/" replace={true} />;
@@ -47,6 +42,7 @@ const OrderSuccessPage = () => {
     </main>
   );
 };
+
 OrderSuccessPage.propTypes = {
   order: PropTypes.any,
 };
