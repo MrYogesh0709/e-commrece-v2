@@ -83,7 +83,8 @@ export const fetchUserOrder = async (req, res) => {
   const { id: userId } = req.user;
   const orders = await Order.find({ user: userId })
     .populate("items.product")
-    .populate("selectedAddress");
+    .populate("selectedAddress")
+    .sort({ createdAt: -1 });
   res.status(StatusCodes.OK).json(orders);
 };
 

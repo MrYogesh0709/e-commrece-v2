@@ -11,7 +11,7 @@ const UserOrder = () => {
   return (
     <div className="mx-auto mt-12 bg-white dark:bg-slate-900 max-w-7xl px-4 sm:px-6 lg:px-8 ">
       {orders?.length > 0 ? (
-        orders.reverse().map((order) => (
+        orders.map((order) => (
           <div
             className="border-t border-gray-200  px-4 py-6 sm:px-6"
             key={order.id}
