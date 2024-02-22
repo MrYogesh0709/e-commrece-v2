@@ -5,13 +5,18 @@ import { useDispatch } from "react-redux";
 import { resetCartAsync } from "../features/cart/cartSlice";
 
 const OrderSuccessPage = () => {
-  const { id: orderID } = useParams();
+  const { orderId } = useParams();
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(resetCartAsync());
+    try {
+      dispatch(resetCartAsync());
+    } catch (error) {
+      console.log(error);
+    }
   }, [dispatch]);
 
-  if (!orderID) return <Navigate to="/" replace={true} />;
+  if (!orderId) return <Navigate to="/" replace={true} />;
 
   return (
     <main className="grid min-h-full place-items-center bg-white dark:bg-slate-900 px-6 py-24 sm:py-32 lg:px-8">
@@ -20,7 +25,7 @@ const OrderSuccessPage = () => {
           Order Successfully Placed
         </p>
         <h1 className="mt-4 text-basefont-semibold tracking-tight text-gray-900 dark:text-slate-200 sm:text-3xl">
-          Your Order ID #{orderID}
+          Your Order ID #{orderId}
         </h1>
         <p className="mt-6 text-base leading-7 text-gray-600 dark:text-slate-400">
           You can check your order in My Account {">"}{" "}

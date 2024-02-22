@@ -74,7 +74,7 @@ cloudinary.config({
   secure: true,
 });
 
-server.post("/api/v1/create-payment-intent", stripeController);
+server.post("/api/v1/create-payment-intent", isAuth, stripeController);
 server.use("/api/v1/products", productRouter);
 server.use("/api/v1/brands", brandsRouter);
 server.use("/api/v1/categories", categoryRouter);

@@ -94,7 +94,12 @@ const Checkout = () => {
   if (data && data.paymentMethod === "cash")
     return <Navigate to={`/order-success/${data.id}`} replace={true} />;
   if (data && data.paymentMethod === "card")
-    return <Navigate to={`/stripe-pay`} state={data} replace={true} />;
+    return (
+      <Navigate
+        to={`/stripe-pay?total_amount=${totalAmount}&orderId=${data.id}`}
+        replace={true}
+      />
+    );
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -48,6 +48,7 @@ export const resetCartAsync = createAsyncThunk("cart/resetCart", async () => {
   const response = await resetCart();
   return response.data;
 });
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState,

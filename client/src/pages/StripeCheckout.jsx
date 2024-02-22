@@ -6,16 +6,21 @@ import {
 } from "@stripe/react-stripe-js";
 import PropTypes from "prop-types";
 
-export default function StripeCheckout({ orderId, clientSecret }) {
+export default function StripeCheckout() {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const orderId = new URLSearchParams(window.location.search).get("orderId");
+
   useEffect(() => {
     if (!stripe) {
       return;
     }
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      "payment_intent_client_secret"
+    );
 
     if (!clientSecret) {
       return;

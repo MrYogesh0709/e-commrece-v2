@@ -174,12 +174,8 @@ const router = createBrowserRouter([
     errorElement: <SinglePageError />,
   },
   {
-    path: "/order-success/:id",
-    element: (
-      <Protected>
-        <OrderSuccessPage />
-      </Protected>
-    ),
+    path: "/order-success/:orderId",
+    element: <OrderSuccessPage />,
     errorElement: <SinglePageError />,
   },
   {
