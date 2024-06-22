@@ -12,20 +12,6 @@ import { addAddressAsync, selectUser } from "../features/user/userSlice";
 import Modal from "../features/common/Modal";
 import { toast } from "react-toastify";
 import { classNames, formatPrice } from "../app/constants";
-import axios from "axios";
-
-export const action = async ({ request }) => {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  try {
-    const response = await axios.post("/api/v1/order", data);
-    return response.data;
-  } catch (error) {
-    return {
-      error: error?.response?.data?.msg || "An error occurred",
-    };
-  }
-};
 
 const Checkout = () => {
   const dispatch = useDispatch();

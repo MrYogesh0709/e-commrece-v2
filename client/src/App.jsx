@@ -49,8 +49,8 @@ import {
   UserOrderLoader,
 } from "./app/loader";
 
-import { action as updateOrder } from "./app/action";
-import { action as orderItem } from "./pages/Checkout";
+import { updateOrderAction as updateOrder } from "./app/action";
+import { checkoutAction as orderItem } from "./app/action";
 
 const queryClient = new QueryClient({
   defaultOptions: {
