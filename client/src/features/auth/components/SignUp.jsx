@@ -9,6 +9,7 @@ import {
 } from "../authSlice";
 import logo from "../../../assets/logo.png";
 import { toast } from "react-toastify";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,8 @@ const SignUp = () => {
 
   const [emailValue, setEmailValue] = useState("");
   const [showButton, setShowButton] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = (data) => {
     setEmailValue(data.email);
@@ -49,6 +52,14 @@ const SignUp = () => {
     } catch (error) {
       console.error("Error sending verification email:", error);
     }
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -113,7 +124,7 @@ const SignUp = () => {
                   </Link>
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative flex items-center">
                 <input
                   id="password"
                   {...register("password", {
@@ -133,17 +144,23 @@ const SignUp = () => {
                       ),
                     },
                   })}
-                  type="password"
+                  type={showPassword ? "password" : "text"}
                   autoComplete="current-password"
                   className="block w-full dark:bg-slate-600 dark:text-slate-200 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <div className="absolute right-2">
+                  <EyeIcon
+                    className="w-6 h-6 hover:text-gray-100 text-gray-300"
+                    onClick={handleShowPassword}
+                  />
+                </div>
                 <p className="text-red-500">
                   {errors.password && errors.password?.message}
                 </p>
               </div>
             </div>
 
-            <div>
+            <div className="">
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="confirmPassword"
@@ -152,7 +169,7 @@ const SignUp = () => {
                   Confirm Password
                 </label>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative flex items-center">
                 <input
                   id="confirmPassword"
                   {...register("confirmPassword", {
@@ -161,10 +178,16 @@ const SignUp = () => {
                       value === formValues.password ||
                       "Password does not match",
                   })}
-                  type="password"
+                  type={showConfirmPassword ? "password" : "text"}
                   required
                   className="block w-full dark:bg-slate-600 dark:text-slate-200 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <div className="absolute right-2">
+                  <EyeIcon
+                    className="w-6 h-6 hover:text-gray-100 text-gray-300"
+                    onClick={handleShowConfirmPassword}
+                  />
+                </div>
                 <p className="text-red-500">
                   {errors.confirmPassword && errors.confirmPassword?.message}
                 </p>

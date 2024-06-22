@@ -23,8 +23,6 @@ export default function AddProduct() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data.colors);
-    console.log(data.sizes);
     try {
       const product = {
         ...data,
@@ -87,9 +85,6 @@ export default function AddProduct() {
               </h2>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                {/* {singleProduct?.deleted && (
-                  <h2 className="text-red-600">This Product is Deleted</h2>
-                )} */}
                 {/* Product Name */}
                 <div className="sm:col-span-full">
                   <label

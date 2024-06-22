@@ -147,7 +147,6 @@ export default function ProductForm() {
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                   .join(" / ")}
               </h2>
-
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 {singleProduct?.deleted && (
                   <h2 className="text-red-600">This Product is Deleted</h2>

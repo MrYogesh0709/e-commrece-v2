@@ -9,7 +9,6 @@ const UserProfile = () => {
   const dispatch = useDispatch();
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
   const { userInfo: user, isLoading } = useSelector(selectUser);
-  console.log(user);
   const {
     register,
     handleSubmit,

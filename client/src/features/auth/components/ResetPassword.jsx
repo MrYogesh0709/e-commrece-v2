@@ -12,7 +12,6 @@ const ResetPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { error, status, msg } = useSelector(selectAuth);
-  console.log(msg);
   const [success, setSuccess] = useState(false);
   const {
     register,

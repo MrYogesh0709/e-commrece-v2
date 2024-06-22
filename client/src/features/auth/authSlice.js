@@ -140,7 +140,6 @@ export const authSlice = createSlice({
         toast.success("Password Reset Successfully");
       })
       .addCase(resetPasswordAsync.rejected, (state, action) => {
-        console.log(action.payload);
         state.status = "failed";
         state.error = action.payload;
         toast.error(action.payload);
