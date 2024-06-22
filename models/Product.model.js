@@ -14,6 +14,10 @@ const ProductSchema = new Schema(
       required: [true, "Please provide product description"],
       maxLength: [1000, "Description can not be more than 1000 characters"],
     },
+    sku: {
+      type: String,
+      maxLength: [10, "Sku can not be more than 10 characters"],
+    },
     price: {
       type: Number,
       required: [true, "Please provide product price"],
@@ -32,20 +36,42 @@ const ProductSchema = new Schema(
       min: [0, "Wrong discount price"],
       max: [10000, "Wrong discount price"],
     },
+    minimumOrderQuantity: {
+      type: Number,
+      min: [0, "Wrong min order quantity"],
+    },
+    returnPolicy: {
+      type: String,
+      maxLength: [500, "limit exceed"],
+    },
     stock: {
       type: Number,
       required: true,
       default: 0,
       min: [0, "Wrong min stock"],
     },
+    tags: {
+      type: [String],
+    },
+    weight: {
+      type: Number,
+    },
+    warrantyInformation: {
+      type: String,
+      max: [200, "Information limit exceed"],
+    },
+    shippingInformation: {
+      type: String,
+      max: [200, "Information limit exceed"],
+    },
     //todo:can we add category & brand as per category model.
     category: {
       type: String,
-      required: [true, "Please provide product category"],
+      max: [50, "category limit exceed"],
     },
     brand: {
       type: String,
-      required: [true, "Please provide brand"],
+      max: [50, "brand limit exceed"],
     },
     thumbnail: {
       type: String,

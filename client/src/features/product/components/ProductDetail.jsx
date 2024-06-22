@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { Link, useLoaderData } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartAsync, selectCart } from "../../cart/cartSlice";
 import { toast } from "react-toastify";
 import { selectAuth } from "../../auth/authSlice";
-import { scrollToReviewSection } from "../../common/SmoothScroll";
 import { classNames, formatPrice } from "../../../app/constants";
 import { singleProductReview } from "../../../pages/ProductDetailPage";
 import { useQuery } from "@tanstack/react-query";
+import { StarIcon } from "@heroicons/react/20/solid";
+import { scrollToReviewSection } from "../../common/SmoothScroll";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
@@ -19,9 +19,8 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const {
-    data: { count: totalReviews },
+    data: { count: totalReviews, averageRating },
   } = useQuery(singleProductReview(product.id));
-
   const handleCart = (e) => {
     e.preventDefault();
     if (product.deleted) {
@@ -81,41 +80,49 @@ export default function ProductDetail() {
             </li>
           </ol>
         </nav>
-        {/* Image gallery */}
         {product?.images.length > 0 && (
-          <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-            <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-              <img
-                src={product?.images[0]}
-                alt={product?.title}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-            <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+          <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+            {product?.images[0] && (
+              <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg lg:block">
                 <img
-                  src={product?.images[1]}
-                  alt={product?.title}
-                  className="h-full w-full object-cover object-center"
+                  src={product.images[0]}
+                  alt={product.title}
+                  className="h-full w-full object-cover object-center sm:block"
                 />
               </div>
-              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+            )}
+            <div className="lg:grid lg:grid-cols-1 lg:gap-y-8">
+              {product?.images[1] && (
+                <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                  <img
+                    src={product.images[1]}
+                    alt={product.title}
+                    className="h-full w-full object-cover object-center sm:block"
+                  />
+                </div>
+              )}
+              {product?.images[2] && (
+                <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+                  <img
+                    src={product.images[2]}
+                    alt={product.title}
+                    className="h-full w-full object-cover object-center sm:block"
+                  />
+                </div>
+              )}
+            </div>
+            {product.images[3] && (
+              <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                 <img
-                  src={product?.images[2]}
-                  alt={product?.title}
-                  className="h-full w-full object-cover object-center"
+                  src={product.images[3]}
+                  alt={product.title}
+                  className="h-full w-full object-cover object-center sm:block"
                 />
               </div>
-            </div>
-            <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-              <img
-                src={product?.images[3]}
-                alt={product?.title}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
+            )}
           </div>
         )}
+
         {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
@@ -150,7 +157,7 @@ export default function ProductDetail() {
                     <StarIcon
                       key={rating}
                       className={classNames(
-                        product?.averageRating > rating
+                        averageRating > rating
                           ? "text-yellow-500"
                           : "text-gray-300",
                         "h-5 w-5 flex-shrink-0"
@@ -159,19 +166,24 @@ export default function ProductDetail() {
                     />
                   ))}
                 </div>
-                <span className="">
-                  {product?.averageRating} out of 5 stars
-                </span>
+                <span className="ml-2">{averageRating} out of 5 stars</span>
               </div>
               <a
                 href="#review"
-                className="underline text-blue-500"
+                className="underline text-blue-500 mt-1"
                 onClick={(e) => scrollToReviewSection(e, "review")}
               >
                 {totalReviews} reviews
               </a>
+              <div className="flex justify-end flex-col">
+                <div className="text-xs mt-1 text-gray-500">
+                  {"*"} {product?.shippingInformation}
+                </div>
+                <div className="text-xs mt-1 text-gray-500">
+                  {"*"} {product?.returnPolicy}
+                </div>
+              </div>
             </div>
-
             <form className="mt-10">
               {/* Colors */}
               {product?.colors?.length > 0 && (
@@ -332,7 +344,6 @@ export default function ProductDetail() {
             {/* Description and details */}
             <div>
               <h3 className="sr-only">Description</h3>
-
               <div className="space-y-6">
                 <p className="text-base text-gray-900 dark:text-slate-200">
                   {product?.description}

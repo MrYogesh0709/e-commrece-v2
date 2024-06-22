@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import ProductDetail from "../features/product/components/ProductDetail";
 import axios from "axios";
 import { singleProductQuery } from "../app/reactQuery";
+const ReviewComponent = React.lazy(() =>
+  import("../features/Review/component/ReviewComponent")
+);
 
 export const singleProductReview = (id) => {
   return {
     queryKey: ["review", id],
     queryFn: async () => {
       const {
-        data: { reviews, count },
+        data: { reviews, count, averageRating },
       } = await axios(`/api/v1/review/product/${id}`);
-      return { reviews, count };
+      return { reviews, count, averageRating };
     },
   };
 };
@@ -26,21 +29,12 @@ export const loader =
   };
 
 const ProductDetailPage = () => {
-  const [ReviewComponent, setReviewComponent] = useState(null);
-  useEffect(() => {
-    // Dynamic import this is because of promise :->Standard Way -> instead use React.lazy
-    import("../features/Review/component/ReviewComponent").then((module) => {
-      const Review = module.default;
-      setReviewComponent(<Review />);
-    });
-  }, []);
-
   return (
     <>
       <ProductDetail />
-      {/* <Review /> */}
-      {/* Dynamically import ReviewComponent */}
-      {ReviewComponent}
+      <Suspense fallback={<div>Loading Reviews...</div>}>
+        <ReviewComponent />
+      </Suspense>
     </>
   );
 };

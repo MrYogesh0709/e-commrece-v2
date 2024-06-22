@@ -33,10 +33,7 @@ export const createReview = async (req, res) => {
 };
 
 export const getAllReviews = async (req, res) => {
-  const reviews = await Review.find({}).populate({
-    path: "product",
-    select: "title category discountPrice",
-  });
+  const reviews = await Review.find();
   res.status(StatusCodes.OK).json({ reviews, count: reviews.length });
 };
 
@@ -76,16 +73,14 @@ export const updateReview = async (req, res) => {
 
 export const deleteReview = async (req, res) => {
   const { id: reviewId } = req.params;
-
   const review = await Review.findOne({ _id: reviewId });
-
   if (!review) {
     throw new NotFoundError(`No review with id ${reviewId}`);
   }
-
   checkPermissions(req.user, review.user);
-  await review.deleteOne();
-  res.status(StatusCodes.OK).json({ review });
+  const deletedReview = await Review.findOneAndDelete({ _id: reviewId });
+
+  res.status(StatusCodes.OK).json({ review: deletedReview });
 };
 
 export const getSingleProductReviews = async (req, res) => {
@@ -95,8 +90,15 @@ export const getSingleProductReviews = async (req, res) => {
     select: "name profileImage",
   });
 
+  const product = await Product.findById(productId).select("averageRating");
   if (!reviews) {
     throw new BadRequestError("no reviews found");
   }
-  res.status(StatusCodes.OK).json({ reviews, count: reviews.length });
+  res
+    .status(StatusCodes.OK)
+    .json({
+      reviews,
+      count: reviews.length,
+      averageRating: product.averageRating,
+    });
 };

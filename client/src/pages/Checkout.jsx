@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useSubmit, useActionData } from "react-router-dom";
@@ -21,8 +21,9 @@ export const action = async ({ request }) => {
     const response = await axios.post("/api/v1/order", data);
     return response.data;
   } catch (error) {
-    console.log(error);
-    return error;
+    return {
+      error: error?.response?.data?.msg || "An error occurred",
+    };
   }
 };
 
@@ -54,6 +55,12 @@ const Checkout = () => {
     (totalItems, product) => product.quantity + totalItems,
     0
   );
+
+  useEffect(() => {
+    if (data?.error) {
+      toast.error(data.error);
+    }
+  }, [data]);
 
   const handlePayment = (e) => {
     setPaymentMethod(e.target.value);

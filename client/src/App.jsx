@@ -234,7 +234,7 @@ function App() {
 
   useEffect(() => {
     dispatch(checkUserAsync());
-  }, []);
+  }, [dispatch]);
 
   return (
     <QueryClientProvider client={queryClient}>

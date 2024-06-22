@@ -32,7 +32,8 @@ const ReviewComponent = () => {
       return axios.post("/api/v1/review", newReview);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["review"]);
+      queryClient.invalidateQueries(["review", productId]);
+      queryClient.invalidateQueries(["singleProduct", productId]);
       toast.success("Review Added successfully");
       reset();
       setOpenForm(false);
@@ -47,7 +48,8 @@ const ReviewComponent = () => {
       return axios.patch(`/api/v1/review/${newReview._id}`, newReview);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["review"]);
+      queryClient.invalidateQueries(["review", productId]);
+      queryClient.invalidateQueries(["singleProduct", productId]);
       toast.success("Review Updated !!!");
       reset();
       setOpenForm(false);
@@ -79,7 +81,7 @@ const ReviewComponent = () => {
   return (
     <>
       <div className="flex justify-center items-start" id="review">
-        <p className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800 dark:text-slate-200 ">
+        <p className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800 dark:text-slate-200 underline">
           Reviews
         </p>
       </div>
