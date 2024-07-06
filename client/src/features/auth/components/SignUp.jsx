@@ -22,8 +22,8 @@ const SignUp = () => {
 
   const [emailValue, setEmailValue] = useState("");
   const [showButton, setShowButton] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(true);
 
   const onSubmit = (data) => {
     setEmailValue(data.email);
@@ -154,10 +154,10 @@ const SignUp = () => {
                     onClick={handleShowPassword}
                   />
                 </div>
-                <p className="text-red-500">
-                  {errors.password && errors.password?.message}
-                </p>
               </div>
+              <p className="text-red-500">
+                {errors.password && errors.password?.message}
+              </p>
             </div>
 
             <div className="">
@@ -188,10 +188,10 @@ const SignUp = () => {
                     onClick={handleShowConfirmPassword}
                   />
                 </div>
-                <p className="text-red-500">
-                  {errors.confirmPassword && errors.confirmPassword?.message}
-                </p>
               </div>
+              <p className="text-red-500">
+                {errors.confirmPassword && errors.confirmPassword?.message}
+              </p>
 
               <div className="text-sm"></div>
               {errorSignUp && <p className="text-red-500">{errorSignUp}</p>}

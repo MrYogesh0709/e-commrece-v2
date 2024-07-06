@@ -14,7 +14,7 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const { user, errorLogin, status } = useSelector(selectAuth);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
 
   const onSubmit = (data) => {
     try {
@@ -105,10 +105,10 @@ const Login = () => {
                   onClick={handleShowPassword}
                 />
               </div>
-              <p className="text-red-500">
-                {errors.password && errors.password?.message}
-              </p>
             </div>
+            <p className="text-red-500">
+              {errors.password && errors.password?.message}
+            </p>
             {errorLogin && <p className="text-red-500">{errorLogin}</p>}
           </div>
 
